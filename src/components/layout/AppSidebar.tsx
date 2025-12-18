@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const mainNavItems = [
   { title: "Report Issue", url: "/report", icon: AlertTriangle },
@@ -35,15 +36,13 @@ export function AppSidebar() {
     <Sidebar className="border-r-0">
       <SidebarHeader className="p-4 border-b border-sidebar-border">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-            <Bike className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <img src={logo} alt="Golf Chariots Australia" className="w-10 h-10 object-contain" />
           <div className="flex-1 min-w-0">
             <h1 className="font-semibold text-sm text-sidebar-foreground truncate">
               Golf Chariots
             </h1>
             <p className="text-xs text-sidebar-foreground/60 truncate">
-              Fleet Manager
+              Australia
             </p>
           </div>
           <SidebarTrigger className="text-sidebar-foreground/60 hover:text-sidebar-foreground md:hidden" />
