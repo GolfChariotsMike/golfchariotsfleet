@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Bike, Plus, Search, Filter, Zap } from "lucide-react";
+import { Bike, Plus, Search, Filter } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { AddAssetDialog } from "@/components/AddAssetDialog";
+import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import type { Database } from "@/integrations/supabase/types";
 
 type TrikeStatus = Database["public"]["Enums"]["trike_status"];
@@ -58,8 +59,8 @@ export default function Trikes() {
     scooter: trikes?.filter((t) => t.asset_type === "scooter").length || 0,
   };
 
-  const AssetIcon = ({ type }: { type: AssetType }) => 
-    type === "scooter" ? <Zap className="w-5 h-5 text-primary" /> : <Bike className="w-5 h-5 text-primary" />;
+  const AssetIcon = ({ type, className }: { type: AssetType; className?: string }) => 
+    type === "scooter" ? <Bike className={className || "w-5 h-5 text-primary"} /> : <TrikeIcon className={className || "w-5 h-5 text-primary"} />;
 
   return (
     <AppLayout
@@ -88,7 +89,7 @@ export default function Trikes() {
           size="sm"
           onClick={() => setAssetTypeFilter("trike")}
         >
-          <Bike className="w-4 h-4 mr-2" />
+          <TrikeIcon className="w-4 h-4 mr-2" />
           Trikes ({assetTypeCounts.trike})
         </Button>
         <Button
@@ -96,7 +97,7 @@ export default function Trikes() {
           size="sm"
           onClick={() => setAssetTypeFilter("scooter")}
         >
-          <Zap className="w-4 h-4 mr-2" />
+          <Bike className="w-4 h-4 mr-2" />
           Scooters ({assetTypeCounts.scooter})
         </Button>
       </div>

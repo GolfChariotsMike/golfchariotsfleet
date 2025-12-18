@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Bike, Zap, Loader2 } from "lucide-react";
+import { Bike, Loader2 } from "lucide-react";
+import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -122,13 +123,13 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
               <SelectContent>
                 <SelectItem value="trike">
                   <div className="flex items-center gap-2">
-                    <Bike className="w-4 h-4" />
+                    <TrikeIcon className="w-4 h-4" />
                     Trike
                   </div>
                 </SelectItem>
                 <SelectItem value="scooter">
                   <div className="flex items-center gap-2">
-                    <Zap className="w-4 h-4" />
+                    <Bike className="w-4 h-4" />
                     Scooter
                   </div>
                 </SelectItem>
