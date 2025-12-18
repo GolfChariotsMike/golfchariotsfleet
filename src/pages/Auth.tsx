@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bike, Mail, Lock, User, Loader2 } from "lucide-react";
+import { Bike, Mail, Lock, Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,19 +14,13 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-const signupSchema = loginSchema.extend({
-  fullName: z.string().trim().min(2, "Name must be at least 2 characters"),
-});
-
 export default function Auth() {
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   
-  const { signIn, signUp } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -36,10 +30,7 @@ export default function Auth() {
     setIsLoading(true);
 
     try {
-      // Validate inputs
-      const schema = isLogin ? loginSchema : signupSchema;
-      const data = isLogin ? { email, password } : { email, password, fullName };
-      const result = schema.safeParse(data);
+      const result = loginSchema.safeParse({ email, password });
 
       if (!result.success) {
         const fieldErrors: Record<string, string> = {};
@@ -53,36 +44,17 @@ export default function Auth() {
         return;
       }
 
-      if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (error) {
-          toast({
-            variant: "destructive",
-            title: "Login failed",
-            description: error.message === "Invalid login credentials" 
-              ? "Invalid email or password. Please try again."
-              : error.message,
-          });
-        } else {
-          navigate("/report");
-        }
+      const { error } = await signIn(email, password);
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "Login failed",
+          description: error.message === "Invalid login credentials" 
+            ? "Invalid email or password. Please try again."
+            : error.message,
+        });
       } else {
-        const { error } = await signUp(email, password, fullName);
-        if (error) {
-          toast({
-            variant: "destructive",
-            title: "Sign up failed",
-            description: error.message.includes("already registered")
-              ? "This email is already registered. Please sign in instead."
-              : error.message,
-          });
-        } else {
-          toast({
-            title: "Account created!",
-            description: "You can now sign in with your credentials.",
-          });
-          navigate("/report");
-        }
+        navigate("/report");
       }
     } catch (err) {
       toast({
@@ -109,38 +81,13 @@ export default function Auth() {
 
         <Card className="shadow-card border-border/50">
           <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-xl">
-              {isLogin ? "Welcome back" : "Create an account"}
-            </CardTitle>
+            <CardTitle className="text-xl">Welcome back</CardTitle>
             <CardDescription>
-              {isLogin
-                ? "Sign in to manage your fleet"
-                : "Sign up to start reporting issues"}
+              Sign in to manage your fleet
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {!isLogin && (
-                <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="fullName"
-                      type="text"
-                      placeholder="John Smith"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="pl-10"
-                      disabled={isLoading}
-                    />
-                  </div>
-                  {errors.fullName && (
-                    <p className="text-sm text-destructive">{errors.fullName}</p>
-                  )}
-                </div>
-              )}
-
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
@@ -188,33 +135,18 @@ export default function Auth() {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    {isLogin ? "Signing in..." : "Creating account..."}
+                    Signing in...
                   </>
                 ) : (
-                  <>{isLogin ? "Sign In" : "Create Account"}</>
+                  "Sign In"
                 )}
               </Button>
             </form>
-
-            <div className="mt-6 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setErrors({});
-                }}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {isLogin
-                  ? "Don't have an account? Sign up"
-                  : "Already have an account? Sign in"}
-              </button>
-            </div>
           </CardContent>
         </Card>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          Contact admin to be assigned to a golf course
+          Contact your administrator for login credentials
         </p>
       </div>
     </div>
