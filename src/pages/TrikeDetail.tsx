@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle, Zap } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +15,7 @@ import { format } from "date-fns";
 
 type TrikeStatus = Database["public"]["Enums"]["trike_status"];
 type IssueStatus = Database["public"]["Enums"]["issue_status"];
+type AssetType = Database["public"]["Enums"]["asset_type"];
 
 export default function TrikeDetail() {
   const { id } = useParams<{ id: string }>();
@@ -76,9 +77,12 @@ export default function TrikeDetail() {
     },
   });
 
+  const AssetIcon = ({ type, className = "w-7 h-7" }: { type: AssetType; className?: string }) => 
+    type === "scooter" ? <Zap className={`${className} text-primary`} /> : <Bike className={`${className} text-primary`} />;
+
   if (trikeLoading) {
     return (
-      <AppLayout title="Trike Details">
+      <AppLayout title="Asset Details">
         <div className="animate-pulse space-y-6">
           <div className="h-8 bg-muted rounded w-48" />
           <div className="h-40 bg-muted rounded" />
@@ -89,12 +93,12 @@ export default function TrikeDetail() {
 
   if (!trike) {
     return (
-      <AppLayout title="Trike Not Found">
+      <AppLayout title="Asset Not Found">
         <Card>
           <CardContent className="p-12 text-center">
-            <p>This trike could not be found.</p>
+            <p>This asset could not be found.</p>
             <Button onClick={() => navigate("/trikes")} className="mt-4">
-              Back to Trikes
+              Back to Assets
             </Button>
           </CardContent>
         </Card>
@@ -125,7 +129,7 @@ export default function TrikeDetail() {
         className="mb-4 -ml-2"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Trikes
+        Back to Assets
       </Button>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -136,12 +140,13 @@ export default function TrikeDetail() {
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Bike className="w-7 h-7 text-primary" />
+                    <AssetIcon type={trike.asset_type} />
                   </div>
                   <div>
                     <CardTitle className="text-xl">{trike.name}</CardTitle>
                     <CardDescription>
-                      {trike.asset_tag && `Asset Tag: ${trike.asset_tag}`}
+                      <span className="capitalize">{trike.asset_type}</span>
+                      {trike.asset_tag && ` • Asset Tag: ${trike.asset_tag}`}
                     </CardDescription>
                   </div>
                 </div>

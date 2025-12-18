@@ -154,6 +154,7 @@ export type Database = {
       trikes: {
         Row: {
           asset_tag: string | null
+          asset_type: Database["public"]["Enums"]["asset_type"]
           course_id: string
           created_at: string
           id: string
@@ -164,6 +165,7 @@ export type Database = {
         }
         Insert: {
           asset_tag?: string | null
+          asset_type?: Database["public"]["Enums"]["asset_type"]
           course_id: string
           created_at?: string
           id?: string
@@ -174,6 +176,7 @@ export type Database = {
         }
         Update: {
           asset_tag?: string | null
+          asset_type?: Database["public"]["Enums"]["asset_type"]
           course_id?: string
           created_at?: string
           id?: string
@@ -226,6 +229,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "course_user"
+      asset_type: "trike" | "scooter"
       issue_severity: "low" | "medium" | "high"
       issue_status: "reported" | "acknowledged" | "in_repair" | "resolved"
       issue_type:
@@ -364,6 +368,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "course_user"],
+      asset_type: ["trike", "scooter"],
       issue_severity: ["low", "medium", "high"],
       issue_status: ["reported", "acknowledged", "in_repair", "resolved"],
       issue_type: [
