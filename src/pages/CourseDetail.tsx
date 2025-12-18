@@ -1,5 +1,6 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Bike, Phone, Mail, User, AlertTriangle } from "lucide-react";
+import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,9 @@ import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import type { Database } from "@/integrations/supabase/types";
+
+type AssetType = Database["public"]["Enums"]["asset_type"];
 
 export default function CourseDetail() {
   const { id } = useParams<{ id: string }>();
@@ -203,7 +207,11 @@ export default function CourseDetail() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <Bike className="w-5 h-5 text-primary" />
+                        {trike.asset_type === "scooter" ? (
+                          <Bike className="w-5 h-5 text-primary" />
+                        ) : (
+                          <TrikeIcon className="w-5 h-5 text-primary" />
+                        )}
                       </div>
                       <div>
                         <p className="font-medium">{trike.name}</p>
