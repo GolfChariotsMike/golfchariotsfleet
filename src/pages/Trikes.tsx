@@ -21,6 +21,7 @@ export default function Trikes() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<TrikeStatus | "all">("all");
   const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType | "all">("all");
+  const [courseFilter, setCourseFilter] = useState<string>("all");
   const [showAddDialog, setShowAddDialog] = useState(false);
   const { isAdmin } = useAuth();
 
@@ -36,6 +37,18 @@ export default function Trikes() {
     },
   });
 
+  const { data: courses } = useQuery({
+    queryKey: ["courses"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("courses")
+        .select("id, name")
+        .order("name");
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const filteredTrikes = trikes?.filter((trike) => {
     const matchesSearch =
       trike.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -43,7 +56,8 @@ export default function Trikes() {
       trike.courses?.name.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter === "all" || trike.status === statusFilter;
     const matchesAssetType = assetTypeFilter === "all" || trike.asset_type === assetTypeFilter;
-    return matchesSearch && matchesStatus && matchesAssetType;
+    const matchesCourse = courseFilter === "all" || trike.course_id === courseFilter;
+    return matchesSearch && matchesStatus && matchesAssetType && matchesCourse;
   });
 
   const statusCounts = {
@@ -131,7 +145,7 @@ export default function Trikes() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
@@ -154,6 +168,29 @@ export default function Trikes() {
           </SelectContent>
         </Select>
       </div>
+
+      {/* Course Filter Buttons */}
+      {isAdmin && courses && courses.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          <Button
+            variant={courseFilter === "all" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setCourseFilter("all")}
+          >
+            All Courses
+          </Button>
+          {courses.map((course) => (
+            <Button
+              key={course.id}
+              variant={courseFilter === course.id ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCourseFilter(course.id)}
+            >
+              {course.name}
+            </Button>
+          ))}
+        </div>
+      )}
 
       {/* Trike List */}
       {isLoading ? (
