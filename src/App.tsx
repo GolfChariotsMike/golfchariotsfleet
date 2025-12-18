@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/lib/auth-context";
 // Pages
 import Auth from "./pages/Auth";
 import ReportIssue from "./pages/ReportIssue";
+import ScanAsset from "./pages/ScanAsset";
 import Trikes from "./pages/Trikes";
 import TrikeDetail from "./pages/TrikeDetail";
 import Issues from "./pages/Issues";
@@ -82,6 +83,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ReportIssue />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/scan"
+        element={
+          <ProtectedRoute>
+            <ScanAsset />
           </ProtectedRoute>
         }
       />
