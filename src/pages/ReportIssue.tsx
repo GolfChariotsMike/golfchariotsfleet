@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Camera, Upload, X, AlertTriangle, Loader2, CheckCircle2 } from "lucide-react";
+import { Camera, Upload, X, AlertTriangle, Loader2, CheckCircle2, Bike } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,10 +11,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import type { Database } from "@/integrations/supabase/types";
 
 type IssueType = Database["public"]["Enums"]["issue_type"];
 type IssueSeverity = Database["public"]["Enums"]["issue_severity"];
+type AssetType = Database["public"]["Enums"]["asset_type"];
 
 const issueTypes: { value: IssueType; label: string }[] = [
   { value: "damage", label: "Damage" },
@@ -26,15 +28,16 @@ const issueTypes: { value: IssueType; label: string }[] = [
 ];
 
 const severityLevels: { value: IssueSeverity; label: string; description: string }[] = [
-  { value: "low", label: "Low", description: "Minor issue, trike still operational" },
+  { value: "low", label: "Low", description: "Minor issue, vehicle still operational" },
   { value: "medium", label: "Medium", description: "Needs attention soon" },
-  { value: "high", label: "High", description: "Urgent, trike may be unsafe" },
+  { value: "high", label: "High", description: "Urgent, vehicle may be unsafe" },
 ];
 
 export default function ReportIssue() {
   const [searchParams] = useSearchParams();
   const preselectedAsset = searchParams.get("asset");
   
+  const [selectedAssetType, setSelectedAssetType] = useState<AssetType | null>(null);
   const [trikeId, setTrikeId] = useState("");
   const [issueType, setIssueType] = useState<IssueType | "">("");
   const [severity, setSeverity] = useState<IssueSeverity | "">("");
@@ -49,20 +52,13 @@ export default function ReportIssue() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Pre-select asset from URL query param
-  useEffect(() => {
-    if (preselectedAsset && !trikeId) {
-      setTrikeId(preselectedAsset);
-    }
-  }, [preselectedAsset, trikeId]);
-
   // Fetch trikes (filtered by course for non-admins)
   const { data: trikes, isLoading: trikesLoading } = useQuery({
     queryKey: ["trikes", profile?.course_id],
     queryFn: async () => {
       const query = supabase
         .from("trikes")
-        .select("id, name, asset_tag, status, course_id, courses(name)")
+        .select("id, name, asset_tag, status, course_id, asset_type, courses(name)")
         .order("name");
 
       const { data, error } = await query;
@@ -71,6 +67,23 @@ export default function ReportIssue() {
     },
     enabled: !!user,
   });
+
+  // Pre-select asset from URL query param
+  useEffect(() => {
+    if (preselectedAsset && trikes && !trikeId) {
+      const asset = trikes.find(t => t.id === preselectedAsset);
+      if (asset) {
+        setSelectedAssetType(asset.asset_type);
+        setTrikeId(preselectedAsset);
+      }
+    }
+  }, [preselectedAsset, trikes, trikeId]);
+
+  // Filter trikes by selected asset type
+  const filteredVehicles = trikes?.filter(t => t.asset_type === selectedAssetType) || [];
+
+  const trikeCount = trikes?.filter(t => t.asset_type === "trike").length || 0;
+  const scooterCount = trikes?.filter(t => t.asset_type === "scooter").length || 0;
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -156,29 +169,35 @@ export default function ReportIssue() {
         title: "Issue reported!",
         description: "Your issue has been submitted successfully.",
       });
-      // Reset form after short delay
-      setTimeout(() => {
-        setTrikeId("");
-        setIssueType("");
-        setSeverity("");
-        setDescription("");
-        setPhotos([]);
-        setIsSuccess(false);
-      }, 2000);
-    },
-    onError: (error: Error) => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
-    },
-  });
+              // Reset form after short delay
+              setTimeout(() => {
+                setSelectedAssetType(null);
+                setTrikeId("");
+                setIssueType("");
+                setSeverity("");
+                setDescription("");
+                setPhotos([]);
+                setIsSuccess(false);
+              }, 2000);
+            },
+            onError: (error: Error) => {
+              toast({
+                variant: "destructive",
+                title: "Error",
+                description: error.message,
+              });
+            },
+          });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    submitMutation.mutate();
-  };
+          const handleSubmit = async (e: React.FormEvent) => {
+            e.preventDefault();
+            submitMutation.mutate();
+          };
+
+          const handleAssetTypeSelect = (type: AssetType) => {
+            setSelectedAssetType(type);
+            setTrikeId(""); // Reset vehicle selection when changing type
+          };
 
   if (isSuccess) {
     return (
@@ -208,45 +227,72 @@ export default function ReportIssue() {
               <div>
                 <CardTitle>Report an Issue</CardTitle>
                 <CardDescription>
-                  Report damage or problems with a golf trike
+                  Report damage or problems with a vehicle
                 </CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Trike Selection */}
-              <div className="space-y-2">
-                <Label htmlFor="trike">Select Trike *</Label>
-                <Select value={trikeId} onValueChange={setTrikeId}>
-                  <SelectTrigger id="trike" className="w-full">
-                    <SelectValue placeholder="Choose a trike..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {trikesLoading ? (
-                      <SelectItem value="loading" disabled>
-                        Loading...
-                      </SelectItem>
-                    ) : (
-                      trikes?.map((trike) => (
-                        <SelectItem key={trike.id} value={trike.id}>
-                          <span className="font-medium">{trike.name}</span>
-                          {trike.asset_tag && (
-                            <span className="text-muted-foreground ml-2">
-                              ({trike.asset_tag})
-                            </span>
-                          )}
-                          {isAdmin && trike.courses && (
-                            <span className="text-muted-foreground ml-2">
-                              - {trike.courses.name}
-                            </span>
-                          )}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
+              {/* Vehicle Type Selection */}
+              <div className="space-y-3">
+                <Label>Select Vehicle *</Label>
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
+                    type="button"
+                    variant={selectedAssetType === "trike" ? "default" : "outline"}
+                    size="lg"
+                    className="h-20 flex flex-col items-center justify-center gap-2"
+                    onClick={() => handleAssetTypeSelect("trike")}
+                  >
+                    <TrikeIcon className="w-8 h-8" />
+                    <span>Trike ({trikeCount})</span>
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={selectedAssetType === "scooter" ? "default" : "outline"}
+                    size="lg"
+                    className="h-20 flex flex-col items-center justify-center gap-2"
+                    onClick={() => handleAssetTypeSelect("scooter")}
+                  >
+                    <Bike className="w-8 h-8" />
+                    <span>Scooter ({scooterCount})</span>
+                  </Button>
+                </div>
               </div>
+
+              {/* Vehicle Selection - shown after type is selected */}
+              {selectedAssetType && (
+                <div className="space-y-3">
+                  <Label>Select {selectedAssetType === "trike" ? "Trike" : "Scooter"} *</Label>
+                  {trikesLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : filteredVehicles.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      No {selectedAssetType}s available
+                    </p>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {filteredVehicles.map((vehicle) => (
+                        <Button
+                          key={vehicle.id}
+                          type="button"
+                          variant={trikeId === vehicle.id ? "default" : "outline"}
+                          className="h-auto py-3 px-3 flex flex-col items-center justify-center text-center"
+                          onClick={() => setTrikeId(vehicle.id)}
+                        >
+                          <span className="font-medium text-sm">{vehicle.name}</span>
+                          {vehicle.asset_tag && (
+                            <span className="text-xs opacity-70">{vehicle.asset_tag}</span>
+                          )}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Issue Type */}
               <div className="space-y-2">
