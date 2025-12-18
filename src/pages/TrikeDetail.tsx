@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle, Trash2 } from "lucide-react";
+import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle, Trash2, Pencil } from "lucide-react";
 import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import { AssetQRCode } from "@/components/AssetQRCode";
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -9,6 +9,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { StatusBadge, SeverityBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -27,6 +30,8 @@ export default function TrikeDetail() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [issueFilter, setIssueFilter] = useState<"all" | "open">("open");
+  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
+  const [newName, setNewName] = useState("");
 
   const { data: trike, isLoading: trikeLoading } = useQuery({
     queryKey: ["trike", id],
@@ -105,6 +110,31 @@ export default function TrikeDetail() {
       toast({ variant: "destructive", title: "Failed to delete asset" });
     },
   });
+
+  const renameAssetMutation = useMutation({
+    mutationFn: async (name: string) => {
+      const { error } = await supabase
+        .from("trikes")
+        .update({ name })
+        .eq("id", id!);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trike", id] });
+      queryClient.invalidateQueries({ queryKey: ["trikes"] });
+      toast({ title: "Asset renamed successfully" });
+      setRenameDialogOpen(false);
+    },
+    onError: () => {
+      toast({ variant: "destructive", title: "Failed to rename asset" });
+    },
+  });
+
+  const handleRename = () => {
+    if (newName.trim()) {
+      renameAssetMutation.mutate(newName.trim());
+    }
+  };
 
   const AssetIcon = ({ type, className = "w-7 h-7" }: { type: AssetType; className?: string }) => 
     type === "scooter" ? <Bike className={`${className} text-primary`} /> : <TrikeIcon className={`${className} text-primary`} />;
@@ -194,6 +224,47 @@ export default function TrikeDetail() {
               {/* Quick Actions */}
               {isAdmin && (
                 <div className="pt-4 border-t flex flex-wrap gap-2">
+                  <Dialog open={renameDialogOpen} onOpenChange={(open) => {
+                    setRenameDialogOpen(open);
+                    if (open) setNewName(trike.name);
+                  }}>
+                    <DialogTrigger asChild>
+                      <Button size="sm" variant="outline">
+                        <Pencil className="w-4 h-4 mr-2" />
+                        Rename
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Rename Asset</DialogTitle>
+                        <DialogDescription>
+                          Enter a new name for this asset.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="name">Asset Name</Label>
+                          <Input
+                            id="name"
+                            value={newName}
+                            onChange={(e) => setNewName(e.target.value)}
+                            placeholder="Enter asset name"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => setRenameDialogOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={handleRename} 
+                          disabled={!newName.trim() || renameAssetMutation.isPending}
+                        >
+                          {renameAssetMutation.isPending ? "Saving..." : "Save"}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                   <Button
                     size="sm"
                     variant={trike.status === "available" ? "default" : "outline"}
