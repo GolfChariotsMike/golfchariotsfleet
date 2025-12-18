@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Bike, Plus, Search, Filter } from "lucide-react";
+import { Bike, Plus, Search, Filter, Warehouse } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,10 +53,12 @@ export default function Trikes() {
     const matchesSearch =
       trike.name.toLowerCase().includes(search.toLowerCase()) ||
       trike.asset_tag?.toLowerCase().includes(search.toLowerCase()) ||
-      trike.courses?.name.toLowerCase().includes(search.toLowerCase());
+      trike.courses?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      trike.location?.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter === "all" || trike.status === statusFilter;
     const matchesAssetType = assetTypeFilter === "all" || trike.asset_type === assetTypeFilter;
-    const matchesCourse = courseFilter === "all" || trike.course_id === courseFilter;
+    const matchesCourse = courseFilter === "all" || trike.course_id === courseFilter || 
+      (courseFilter === "offsite" && trike.location);
     return matchesSearch && matchesStatus && matchesAssetType && matchesCourse;
   });
 
@@ -169,7 +171,7 @@ export default function Trikes() {
         </Select>
       </div>
 
-      {/* Course Filter Buttons */}
+      {/* Location Filter Buttons */}
       {isAdmin && courses && courses.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-6">
           <Button
@@ -177,7 +179,7 @@ export default function Trikes() {
             size="sm"
             onClick={() => setCourseFilter("all")}
           >
-            All Courses
+            All Locations
           </Button>
           {courses.map((course) => (
             <Button
@@ -189,6 +191,14 @@ export default function Trikes() {
               {course.name}
             </Button>
           ))}
+          <Button
+            variant={courseFilter === "offsite" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setCourseFilter("offsite")}
+          >
+            <Warehouse className="w-4 h-4 mr-1" />
+            Off-site
+          </Button>
         </div>
       )}
 
@@ -237,8 +247,15 @@ export default function Trikes() {
                     </div>
                     <StatusBadge status={trike.status} />
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    {trike.courses?.name || "Unassigned"}
+                  <div className="text-sm text-muted-foreground flex items-center gap-1">
+                    {trike.location ? (
+                      <>
+                        <Warehouse className="w-3 h-3" />
+                        {trike.location}
+                      </>
+                    ) : (
+                      trike.courses?.name || "Unassigned"
+                    )}
                   </div>
                   {trike.notes && (
                     <p className="text-sm text-muted-foreground mt-2 line-clamp-2">

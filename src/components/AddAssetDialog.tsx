@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bike, Loader2 } from "lucide-react";
+import { Bike, Loader2, MapPin, Warehouse } from "lucide-react";
 import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +27,9 @@ import type { Database } from "@/integrations/supabase/types";
 
 type AssetType = Database["public"]["Enums"]["asset_type"];
 
+// Off-site locations (workshops/storage)
+const OFF_SITE_LOCATIONS = ["Wangara", "Wembley Downs", "Greenwood"];
+
 interface AddAssetDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -36,7 +39,9 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
   const [name, setName] = useState("");
   const [assetTag, setAssetTag] = useState("");
   const [assetType, setAssetType] = useState<AssetType>("trike");
+  const [locationType, setLocationType] = useState<"course" | "offsite">("course");
   const [courseId, setCourseId] = useState("");
+  const [offsiteLocation, setOffsiteLocation] = useState("");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -56,7 +61,9 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !courseId) {
+    
+    const hasValidLocation = locationType === "course" ? !!courseId : !!offsiteLocation;
+    if (!name.trim() || !hasValidLocation) {
       toast({
         title: "Missing fields",
         description: "Please fill in all required fields",
@@ -71,7 +78,8 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
         name: name.trim(),
         asset_tag: assetTag.trim() || null,
         asset_type: assetType,
-        course_id: courseId,
+        course_id: locationType === "course" ? courseId : null,
+        location: locationType === "offsite" ? offsiteLocation : null,
         notes: notes.trim() || null,
       });
 
@@ -100,7 +108,9 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
     setName("");
     setAssetTag("");
     setAssetType("trike");
+    setLocationType("course");
     setCourseId("");
+    setOffsiteLocation("");
     setNotes("");
   };
 
@@ -158,20 +168,68 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="course">Course *</Label>
-            <Select value={courseId} onValueChange={setCourseId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a course" />
-              </SelectTrigger>
-              <SelectContent>
-                {courses?.map((course) => (
-                  <SelectItem key={course.id} value={course.id}>
-                    {course.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Label>Location Type *</Label>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                type="button"
+                variant={locationType === "course" ? "default" : "outline"}
+                onClick={() => {
+                  setLocationType("course");
+                  setOffsiteLocation("");
+                }}
+                className="justify-start"
+              >
+                <MapPin className="w-4 h-4 mr-2" />
+                Course
+              </Button>
+              <Button
+                type="button"
+                variant={locationType === "offsite" ? "default" : "outline"}
+                onClick={() => {
+                  setLocationType("offsite");
+                  setCourseId("");
+                }}
+                className="justify-start"
+              >
+                <Warehouse className="w-4 h-4 mr-2" />
+                Off-site
+              </Button>
+            </div>
           </div>
+
+          {locationType === "course" ? (
+            <div className="space-y-2">
+              <Label htmlFor="course">Course *</Label>
+              <Select value={courseId} onValueChange={setCourseId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a course" />
+                </SelectTrigger>
+                <SelectContent>
+                  {courses?.map((course) => (
+                    <SelectItem key={course.id} value={course.id}>
+                      {course.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <Label htmlFor="location">Off-site Location *</Label>
+              <Select value={offsiteLocation} onValueChange={setOffsiteLocation}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a location" />
+                </SelectTrigger>
+                <SelectContent>
+                  {OFF_SITE_LOCATIONS.map((loc) => (
+                    <SelectItem key={loc} value={loc}>
+                      {loc}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="notes">Notes</Label>

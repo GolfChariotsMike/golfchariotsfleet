@@ -155,9 +155,10 @@ export type Database = {
         Row: {
           asset_tag: string | null
           asset_type: Database["public"]["Enums"]["asset_type"]
-          course_id: string
+          course_id: string | null
           created_at: string
           id: string
+          location: string | null
           name: string
           notes: string | null
           status: Database["public"]["Enums"]["trike_status"]
@@ -166,9 +167,10 @@ export type Database = {
         Insert: {
           asset_tag?: string | null
           asset_type?: Database["public"]["Enums"]["asset_type"]
-          course_id: string
+          course_id?: string | null
           created_at?: string
           id?: string
+          location?: string | null
           name: string
           notes?: string | null
           status?: Database["public"]["Enums"]["trike_status"]
@@ -177,9 +179,10 @@ export type Database = {
         Update: {
           asset_tag?: string | null
           asset_type?: Database["public"]["Enums"]["asset_type"]
-          course_id?: string
+          course_id?: string | null
           created_at?: string
           id?: string
+          location?: string | null
           name?: string
           notes?: string | null
           status?: Database["public"]["Enums"]["trike_status"]
