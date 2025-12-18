@@ -34,7 +34,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-r-0">
-      <SidebarHeader className="p-4 border-b border-sidebar-border">
+      <SidebarHeader className="p-4 border-b border-sidebar-border bg-white">
         <div className="flex items-center gap-3">
           <img src={logo} alt="Golf Chariots Australia" className="w-10 h-10 object-contain" />
           <div className="flex-1 min-w-0">
