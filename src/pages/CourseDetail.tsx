@@ -214,7 +214,10 @@ export default function CourseDetail() {
                         )}
                       </div>
                       <div>
-                        <p className="font-medium">{trike.name}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{trike.name}</p>
+                          <span className="text-xs text-muted-foreground capitalize">({trike.asset_type})</span>
+                        </div>
                         {trike.asset_tag && (
                           <p className="text-xs text-muted-foreground">
                             {trike.asset_tag}
