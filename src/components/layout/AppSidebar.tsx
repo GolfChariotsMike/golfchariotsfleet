@@ -36,16 +36,16 @@ export function AppSidebar() {
     <Sidebar className="border-r-0">
       <SidebarHeader className="p-4 border-b border-sidebar-border bg-white">
         <div className="flex items-center gap-3">
-          <img src={logo} alt="Golf Chariots Australia" className="w-10 h-10 object-contain" />
+          <img src={logo} alt="Golf Chariots Australia" className="w-14 h-14 object-contain" />
           <div className="flex-1 min-w-0">
-            <h1 className="font-semibold text-sm text-sidebar-foreground truncate">
+            <h1 className="font-semibold text-sm text-black truncate">
               Golf Chariots
             </h1>
-            <p className="text-xs text-sidebar-foreground/60 truncate">
+            <p className="text-xs text-black/60 truncate">
               Australia
             </p>
           </div>
-          <SidebarTrigger className="text-sidebar-foreground/60 hover:text-sidebar-foreground md:hidden" />
+          <SidebarTrigger className="text-black/60 hover:text-black md:hidden" />
         </div>
       </SidebarHeader>
 
