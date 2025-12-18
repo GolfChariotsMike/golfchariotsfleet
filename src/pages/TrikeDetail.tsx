@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle, Trash2 } from "lucide-react";
 import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import { AssetQRCode } from "@/components/AssetQRCode";
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatusBadge, SeverityBadge } from "@/components/ui/status-badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -76,6 +77,32 @@ export default function TrikeDetail() {
     },
     onError: () => {
       toast({ variant: "destructive", title: "Failed to update status" });
+    },
+  });
+
+  const deleteAssetMutation = useMutation({
+    mutationFn: async () => {
+      // First delete related issues
+      const { error: issuesError } = await supabase
+        .from("issues")
+        .delete()
+        .eq("trike_id", id!);
+      if (issuesError) throw issuesError;
+
+      // Then delete the asset
+      const { error } = await supabase
+        .from("trikes")
+        .delete()
+        .eq("id", id!);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trikes"] });
+      toast({ title: "Asset deleted successfully" });
+      navigate("/trikes");
+    },
+    onError: () => {
+      toast({ variant: "destructive", title: "Failed to delete asset" });
     },
   });
 
@@ -185,6 +212,31 @@ export default function TrikeDetail() {
                     <XCircle className="w-4 h-4 mr-2" />
                     Mark Out of Service
                   </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button size="sm" variant="outline" className="text-destructive hover:text-destructive">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete Asset
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Asset</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete "{trike.name}"? This will also delete all {issues?.length || 0} associated issues. This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => deleteAssetMutation.mutate()}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               )}
             </CardContent>
