@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { Settings as SettingsIcon, Users, Shield, Loader2 } from "lucide-react";
+import { Users, Shield, Loader2, Plus, UserPlus, Mail, Lock, User } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -19,6 +22,15 @@ export default function Settings() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+  const [newUser, setNewUser] = useState({
+    email: "",
+    password: "",
+    fullName: "",
+    courseId: "",
+    role: "course_user" as AppRole,
+  });
 
   // Redirect non-admin users
   useEffect(() => {
@@ -59,6 +71,71 @@ export default function Settings() {
       return data;
     },
     enabled: isAdmin,
+  });
+
+  const createUserMutation = useMutation({
+    mutationFn: async () => {
+      // Create user via Supabase Auth admin API (using signUp as workaround)
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: newUser.email,
+        password: newUser.password,
+        options: {
+          data: {
+            full_name: newUser.fullName,
+          },
+        },
+      });
+
+      if (authError) throw authError;
+      if (!authData.user) throw new Error("Failed to create user");
+
+      // Update profile with course assignment
+      if (newUser.courseId) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .update({ course_id: newUser.courseId })
+          .eq("id", authData.user.id);
+
+        if (profileError) throw profileError;
+      }
+
+      // Update role if admin
+      if (newUser.role === "admin") {
+        // Delete default role and add admin
+        await supabase.from("user_roles").delete().eq("user_id", authData.user.id);
+        const { error: roleError } = await supabase.from("user_roles").insert({
+          user_id: authData.user.id,
+          role: "admin",
+        });
+        if (roleError) throw roleError;
+      }
+
+      return authData.user;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+      toast({
+        title: "User created",
+        description: `Account created for ${newUser.email}`,
+      });
+      setIsCreateUserOpen(false);
+      setNewUser({
+        email: "",
+        password: "",
+        fullName: "",
+        courseId: "",
+        role: "course_user",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Failed to create user",
+        description: error.message.includes("already registered")
+          ? "This email is already registered"
+          : error.message,
+      });
+    },
   });
 
   const updateUserMutation = useMutation({
@@ -103,7 +180,127 @@ export default function Settings() {
   if (!isAdmin) return null;
 
   return (
-    <AppLayout title="Settings">
+    <AppLayout
+      title="Settings"
+      actions={
+        <Dialog open={isCreateUserOpen} onOpenChange={setIsCreateUserOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Create User
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create New User</DialogTitle>
+              <DialogDescription>
+                Create a login for a course staff member or admin
+              </DialogDescription>
+            </DialogHeader>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!newUser.email || !newUser.password) return;
+                createUserMutation.mutate();
+              }}
+              className="space-y-4"
+            >
+              <div className="space-y-2">
+                <Label htmlFor="newUserName">Full Name</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="newUserName"
+                    value={newUser.fullName}
+                    onChange={(e) => setNewUser({ ...newUser, fullName: e.target.value })}
+                    placeholder="John Smith"
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="newUserEmail">Email *</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="newUserEmail"
+                    type="email"
+                    value={newUser.email}
+                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                    placeholder="user@golfcourse.com.au"
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="newUserPassword">Password *</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="newUserPassword"
+                    type="password"
+                    value={newUser.password}
+                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                    placeholder="Minimum 6 characters"
+                    className="pl-10"
+                    minLength={6}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="newUserCourse">Assign to Course</Label>
+                <Select
+                  value={newUser.courseId}
+                  onValueChange={(v) => setNewUser({ ...newUser, courseId: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a course..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {courses?.map((course) => (
+                      <SelectItem key={course.id} value={course.id}>
+                        {course.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="newUserRole">Role</Label>
+                <Select
+                  value={newUser.role}
+                  onValueChange={(v) => setNewUser({ ...newUser, role: v as AppRole })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="course_user">Course User</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={createUserMutation.isPending}
+              >
+                {createUserMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create User"
+                )}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      }
+    >
       <div className="max-w-4xl mx-auto space-y-6">
         {/* User Management */}
         <Card>
@@ -115,7 +312,7 @@ export default function Settings() {
               <div>
                 <CardTitle>User Management</CardTitle>
                 <CardDescription>
-                  Assign users to courses and manage roles
+                  Manage user accounts and course assignments
                 </CardDescription>
               </div>
             </div>
@@ -126,7 +323,14 @@ export default function Settings() {
                 <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
               </div>
             ) : users?.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-4">No users found</p>
+              <div className="text-center py-8">
+                <Users className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground mb-4">No users yet</p>
+                <Button onClick={() => setIsCreateUserOpen(true)}>
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Create First User
+                </Button>
+              </div>
             ) : (
               <div className="space-y-4">
                 {users?.map((user) => (
@@ -137,6 +341,9 @@ export default function Settings() {
                     <div>
                       <p className="font-medium">{user.full_name || "Unnamed User"}</p>
                       <p className="text-sm text-muted-foreground">{user.email}</p>
+                      {user.courses?.name && (
+                        <p className="text-xs text-primary mt-1">{user.courses.name}</p>
+                      )}
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Select
@@ -205,7 +412,7 @@ export default function Settings() {
               <h4 className="font-medium mb-2">Admin Role</h4>
               <ul className="text-sm text-muted-foreground space-y-1">
                 <li>• Full access to all courses, trikes, and issues</li>
-                <li>• Can manage users and assign them to courses</li>
+                <li>• Can create and manage user accounts</li>
                 <li>• Can update issue statuses and add admin notes</li>
                 <li>• Access to Courses and Settings pages</li>
               </ul>
