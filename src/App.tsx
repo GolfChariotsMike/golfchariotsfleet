@@ -13,6 +13,7 @@ import TrikeDetail from "./pages/TrikeDetail";
 import Issues from "./pages/Issues";
 import IssueDetail from "./pages/IssueDetail";
 import Courses from "./pages/Courses";
+import CourseDetail from "./pages/CourseDetail";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -121,6 +122,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <Courses />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/courses/:id"
+        element={
+          <ProtectedRoute>
+            <CourseDetail />
           </ProtectedRoute>
         }
       />

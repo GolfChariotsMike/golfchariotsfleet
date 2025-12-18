@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { MapPin, Plus, Search, Phone, Mail, Users, Bike } from "lucide-react";
+import { MapPin, Plus, Search, Phone, Mail, Users, Bike, ChevronRight } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -213,55 +214,52 @@ export default function Courses() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredCourses?.map((course) => (
-            <Card key={course.id} className="hover:shadow-card transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-primary" />
+            <Link key={course.id} to={`/courses/${course.id}`}>
+              <Card className="hover:shadow-card transition-shadow cursor-pointer group">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <CardTitle className="text-lg truncate">{course.name}</CardTitle>
+                      {course.contact_name && (
+                        <p className="text-sm text-muted-foreground truncate">
+                          {course.contact_name}
+                        </p>
+                      )}
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
                   </div>
-                  <div className="min-w-0">
-                    <CardTitle className="text-lg truncate">{course.name}</CardTitle>
-                    {course.contact_name && (
-                      <p className="text-sm text-muted-foreground truncate">
-                        {course.contact_name}
-                      </p>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center gap-4 text-sm">
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Bike className="w-4 h-4" />
+                      <span>{getTrikeCount(course.id)} trikes</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Users className="w-4 h-4" />
+                      <span>{getUserCount(course.id)} users</span>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5 text-sm">
+                    {course.phone && (
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Phone className="w-4 h-4" />
+                        {course.phone}
+                      </div>
+                    )}
+                    {course.email && (
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Mail className="w-4 h-4" />
+                        <span className="truncate">{course.email}</span>
+                      </div>
                     )}
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-4 text-sm">
-                  <div className="flex items-center gap-1.5 text-muted-foreground">
-                    <Bike className="w-4 h-4" />
-                    <span>{getTrikeCount(course.id)} trikes</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-muted-foreground">
-                    <Users className="w-4 h-4" />
-                    <span>{getUserCount(course.id)} users</span>
-                  </div>
-                </div>
-                <div className="space-y-1.5 text-sm">
-                  {course.phone && (
-                    <a
-                      href={`tel:${course.phone}`}
-                      className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Phone className="w-4 h-4" />
-                      {course.phone}
-                    </a>
-                  )}
-                  {course.email && (
-                    <a
-                      href={`mailto:${course.email}`}
-                      className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Mail className="w-4 h-4" />
-                      <span className="truncate">{course.email}</span>
-                    </a>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       )}
