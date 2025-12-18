@@ -17,8 +17,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
+const primaryAction = { title: "Scan Asset", url: "/scan", icon: ScanLine };
+
 const mainNavItems = [
-  { title: "Scan Asset", url: "/scan", icon: ScanLine },
   { title: "Report Issue", url: "/report", icon: AlertTriangle },
   { title: "Fleet", url: "/trikes", icon: Bike },
   { title: "Issues", url: "/issues", icon: ClipboardList },
@@ -51,7 +52,27 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="px-3 py-4">
+        {/* Primary Action - Scan Asset */}
         <SidebarGroup>
+          <SidebarGroupContent>
+            <NavLink
+              to={primaryAction.url}
+              className={({ isActive }) =>
+                cn(
+                  "flex items-center justify-center gap-3 px-4 py-4 rounded-xl text-base font-semibold transition-colors w-full",
+                  isActive
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-primary/10 text-primary hover:bg-primary/20"
+                )
+              }
+            >
+              <primaryAction.icon className="w-6 h-6" />
+              <span>{primaryAction.title}</span>
+            </NavLink>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup className="mt-4">
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
               {mainNavItems.map((item) => (
@@ -61,7 +82,7 @@ export function AppSidebar() {
                       to={item.url}
                       className={({ isActive }) =>
                         cn(
-                          "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                          "flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors",
                           isActive
                             ? "bg-sidebar-accent text-sidebar-accent-foreground"
                             : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
