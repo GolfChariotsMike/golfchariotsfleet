@@ -49,12 +49,12 @@ export default function Courses() {
     enabled: isAdmin,
   });
 
-  const { data: trikes } = useQuery({
-    queryKey: ["trikes-count"],
+  const { data: assets } = useQuery({
+    queryKey: ["assets-count"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("trikes")
-        .select("id, course_id");
+        .select("id, course_id, asset_type");
       if (error) throw error;
       return data;
     },
@@ -99,8 +99,8 @@ export default function Courses() {
     course.contact_name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const getTrikeCount = (courseId: string) =>
-    trikes?.filter((t) => t.course_id === courseId).length || 0;
+  const getAssetCount = (courseId: string) =>
+    assets?.filter((a) => a.course_id === courseId).length || 0;
 
   const getUserCount = (courseId: string) =>
     users?.filter((u) => u.course_id === courseId).length || 0;
@@ -236,7 +236,7 @@ export default function Courses() {
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1.5 text-muted-foreground">
                       <Bike className="w-4 h-4" />
-                      <span>{getTrikeCount(course.id)} trikes</span>
+                      <span>{getAssetCount(course.id)} vehicles</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-muted-foreground">
                       <Users className="w-4 h-4" />
