@@ -13,8 +13,8 @@ interface AssetQRCodeProps {
 export function AssetQRCode({ assetId, assetName, assetTag }: AssetQRCodeProps) {
   const qrRef = useRef<HTMLDivElement>(null);
   
-  // URL that the QR code will link to - the report issue page with asset pre-selected
-  const reportUrl = `${window.location.origin}/report?asset=${assetId}`;
+  // Simple asset ID - the app's QR scanner will handle navigation
+  const qrValue = assetId;
 
   const downloadQRCode = () => {
     if (!qrRef.current) return;
@@ -84,9 +84,9 @@ export function AssetQRCode({ assetId, assetName, assetTag }: AssetQRCodeProps) 
       <CardContent className="flex flex-col items-center gap-4">
         <div ref={qrRef} className="bg-white p-4 rounded-lg">
           <QRCodeSVG
-            value={reportUrl}
+            value={qrValue}
             size={160}
-            level="H"
+            level="L"
             includeMargin={false}
           />
         </div>

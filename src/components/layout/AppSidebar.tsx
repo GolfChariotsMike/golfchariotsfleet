@@ -1,4 +1,4 @@
-import { AlertTriangle, Bike, ClipboardList, MapPin, Settings, LogOut } from "lucide-react";
+import { AlertTriangle, Bike, ClipboardList, MapPin, Settings, LogOut, ScanLine } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/lib/auth-context";
 import {
@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
 
 const mainNavItems = [
+  { title: "Scan Asset", url: "/scan", icon: ScanLine },
   { title: "Report Issue", url: "/report", icon: AlertTriangle },
   { title: "Fleet", url: "/trikes", icon: Bike },
   { title: "Issues", url: "/issues", icon: ClipboardList },
