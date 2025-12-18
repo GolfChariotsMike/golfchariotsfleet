@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle } from "lucide-react";
 import { TrikeIcon } from "@/components/icons/TrikeIcon";
+import { AssetQRCode } from "@/components/AssetQRCode";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -254,6 +255,13 @@ export default function TrikeDetail() {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {/* QR Code */}
+          <AssetQRCode 
+            assetId={trike.id} 
+            assetName={trike.name} 
+            assetTag={trike.asset_tag} 
+          />
+
           {/* Course Info */}
           {trike.courses && (
             <Card>

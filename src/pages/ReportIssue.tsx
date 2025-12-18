@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Camera, Upload, X, AlertTriangle, Loader2, CheckCircle2 } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,9 @@ const severityLevels: { value: IssueSeverity; label: string; description: string
 ];
 
 export default function ReportIssue() {
+  const [searchParams] = useSearchParams();
+  const preselectedAsset = searchParams.get("asset");
+  
   const [trikeId, setTrikeId] = useState("");
   const [issueType, setIssueType] = useState<IssueType | "">("");
   const [severity, setSeverity] = useState<IssueSeverity | "">("");
@@ -45,6 +48,13 @@ export default function ReportIssue() {
   const { user, profile, isAdmin } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  // Pre-select asset from URL query param
+  useEffect(() => {
+    if (preselectedAsset && !trikeId) {
+      setTrikeId(preselectedAsset);
+    }
+  }, [preselectedAsset, trikeId]);
 
   // Fetch trikes (filtered by course for non-admins)
   const { data: trikes, isLoading: trikesLoading } = useQuery({
