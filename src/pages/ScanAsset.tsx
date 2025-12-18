@@ -67,7 +67,7 @@ export default function ScanAsset() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate(-1)}
+            onClick={() => window.history.length > 1 ? navigate(-1) : navigate("/trikes")}
             className="w-fit mb-2 -ml-2"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
