@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle, Zap } from "lucide-react";
+import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle } from "lucide-react";
+import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -78,7 +79,7 @@ export default function TrikeDetail() {
   });
 
   const AssetIcon = ({ type, className = "w-7 h-7" }: { type: AssetType; className?: string }) => 
-    type === "scooter" ? <Zap className={`${className} text-primary`} /> : <Bike className={`${className} text-primary`} />;
+    type === "scooter" ? <Bike className={`${className} text-primary`} /> : <TrikeIcon className={`${className} text-primary`} />;
 
   if (trikeLoading) {
     return (
