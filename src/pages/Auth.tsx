@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bike, Mail, Lock, Loader2, User } from "lucide-react";
+import { Mail, Lock, Loader2, User } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
+import logo from "@/assets/logo.png";
 
 const loginSchema = z.object({
   email: z.string().trim().email("Please enter a valid email address"),
@@ -148,9 +149,7 @@ export default function Auth() {
       <div className="w-full max-w-md animate-slide-up">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mb-4 shadow-elevated">
-            <Bike className="w-8 h-8 text-primary-foreground" />
-          </div>
+          <img src={logo} alt="Golf Chariots Australia" className="w-24 h-24 object-contain mb-4" />
           <h1 className="text-2xl font-bold text-foreground">Golf Chariots Australia</h1>
           <p className="text-muted-foreground mt-1">Fleet Manager</p>
         </div>
