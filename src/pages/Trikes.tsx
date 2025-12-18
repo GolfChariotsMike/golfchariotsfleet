@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
+import { AddAssetDialog } from "@/components/AddAssetDialog";
 import type { Database } from "@/integrations/supabase/types";
 
 type TrikeStatus = Database["public"]["Enums"]["trike_status"];
@@ -19,6 +20,7 @@ export default function Trikes() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<TrikeStatus | "all">("all");
   const [assetTypeFilter, setAssetTypeFilter] = useState<AssetType | "all">("all");
+  const [showAddDialog, setShowAddDialog] = useState(false);
   const { isAdmin } = useAuth();
 
   const { data: trikes, isLoading } = useQuery({
@@ -61,16 +63,17 @@ export default function Trikes() {
 
   return (
     <AppLayout
-      title="Assets"
+      title="Fleet"
       actions={
         isAdmin && (
-          <Button size="sm">
+          <Button size="sm" onClick={() => setShowAddDialog(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Add Asset
           </Button>
         )
       }
     >
+      <AddAssetDialog open={showAddDialog} onOpenChange={setShowAddDialog} />
       {/* Asset Type Tabs */}
       <div className="flex gap-2 mb-6">
         <Button

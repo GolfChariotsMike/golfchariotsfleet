@@ -19,7 +19,7 @@ import logo from "@/assets/logo.png";
 
 const mainNavItems = [
   { title: "Report Issue", url: "/report", icon: AlertTriangle },
-  { title: "Trikes", url: "/trikes", icon: Bike },
+  { title: "Fleet", url: "/trikes", icon: Bike },
   { title: "Issues", url: "/issues", icon: ClipboardList },
 ];
 
