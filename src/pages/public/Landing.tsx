@@ -89,7 +89,7 @@ const pricingOptions = [
     subtitle: "Flexible terms",
     price: "From $50/week",
     description: "No large upfront cost, all maintenance included",
-    features: ["No deposit required", "Maintenance included", "Swap for newer models", "Cancel anytime after 12 months"],
+    features: ["No deposit required", "Maintenance included", "Swap for newer models", "Flexible terms to suit your needs"],
     featured: true,
   },
 ];
