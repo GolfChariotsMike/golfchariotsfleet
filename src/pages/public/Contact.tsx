@@ -95,6 +95,21 @@ export default function Contact() {
 
       if (error) throw error;
 
+      // Send confirmation emails via edge function
+      const { error: emailError } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: data.name,
+          email: data.email,
+          inquiry_type: data.inquiry_type,
+          message: data.message,
+        },
+      });
+
+      if (emailError) {
+        console.error("Error sending email:", emailError);
+        // Don't throw - form submission succeeded, just email failed
+      }
+
       setIsSubmitted(true);
       toast.success("Message sent successfully! We'll be in touch soon.");
     } catch (error) {
