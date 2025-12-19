@@ -128,8 +128,8 @@ export default function Landing() {
                   </Button>
                 </Link>
                 <Link to="/contact">
-                  <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8">
-                    Get A Quote
+                  <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold text-lg px-8">
+                    Contact Us
                   </Button>
                 </Link>
               </div>
