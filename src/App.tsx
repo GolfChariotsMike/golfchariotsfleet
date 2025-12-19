@@ -59,7 +59,7 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (user) {
-    return <Navigate to="/admin/report" replace />;
+    return <Navigate to="/admin/trikes" replace />;
   }
 
   return <>{children}</>;
@@ -92,7 +92,7 @@ function AppRoutes() {
         path="/admin"
         element={
           <ProtectedRoute>
-            <Navigate to="/admin/report" replace />
+            <Navigate to="/admin/trikes" replace />
           </ProtectedRoute>
         }
       />

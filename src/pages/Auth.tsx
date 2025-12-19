@@ -64,7 +64,7 @@ export default function Auth() {
             : error.message,
         });
       } else {
-        navigate("/report");
+        navigate("/admin/trikes");
       }
     } catch (err) {
       toast({
@@ -129,7 +129,7 @@ export default function Auth() {
       // Sign in automatically
       const { error: signInError } = await signIn(email, password);
       if (!signInError) {
-        navigate("/report");
+        navigate("/admin/trikes");
       } else {
         setIsSetupMode(false);
       }
