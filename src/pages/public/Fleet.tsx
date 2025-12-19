@@ -21,7 +21,7 @@ const vehicles = [
     id: "cp7-trike",
     name: "CP7 3-Wheel Trike",
     tagline: "The Ultimate Golf Experience",
-    description: "Our flagship articulating trike offers superior stability and comfort on any terrain. The unique front wheel articulation provides exceptional maneuverability while maintaining a smooth, safe ride throughout your round.",
+    description: "Our flagship articulating trike offers superior stability and comfort on any terrain. The unique rear wheel articulation provides exceptional maneuverability while maintaining a smooth, safe ride throughout your round.",
     image: cp7TrikeSide,
     gallery: [
       cp7TrikeSide,
