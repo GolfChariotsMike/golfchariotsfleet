@@ -12,6 +12,9 @@ import {
 } from "lucide-react";
 import cp7TrikeSide from "@/assets/cp7-trike-side.jpg";
 import cp7TrikeFront from "@/assets/cp7-trike-front.jpg";
+import cruiserFront from "@/assets/2wheel-cruiser-front.jpg";
+import cruiserSide from "@/assets/2wheel-cruiser-side.jpg";
+import cruiserGroup from "@/assets/2wheel-cruiser-group.jpg";
 
 const vehicles = [
   {
@@ -49,10 +52,10 @@ const vehicles = [
     name: "2-Wheel Golf Cruiser",
     tagline: "Compact & Nimble",
     description: "Perfect for courses seeking a minimalist approach with maximum fun. The 2-Wheel Cruiser offers a more dynamic riding experience with a smaller footprint, making it ideal for tighter courses or those new to golf scooters.",
-    image: "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=800&h=600&fit=crop",
+    image: cruiserSide,
     gallery: [
-      "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=300&fit=crop",
+      cruiserFront,
+      cruiserGroup,
     ],
     features: [
       "Lightweight aluminum frame",
