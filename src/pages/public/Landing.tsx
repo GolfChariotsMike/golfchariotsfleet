@@ -185,8 +185,7 @@ export default function Landing() {
               </h2>
               <p className="text-muted-foreground mb-6">
                 Founded by passionate golfers and industry veterans, Golf Chariots Australia is the nation's 
-                leading supplier of premium fat tyre golf scooters. We've partnered with courses across 
-                Queensland, New South Wales, and Victoria to bring this exciting revolution to Australian golf.
+                leading supplier of premium fat tyre golf scooters.
               </p>
               <p className="text-muted-foreground mb-8">
                 Our mission is simple: make golf more fun, more accessible, and more profitable for courses 
