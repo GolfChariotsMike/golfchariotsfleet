@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react";
+import { Mail, MapPin, Facebook, Instagram } from "lucide-react";
 import logo from "@/assets/golf-chariots-logo.png";
 
 export function PublicFooter() {
@@ -74,12 +74,6 @@ export function PublicFooter() {
             <h4 className="font-display font-semibold text-lg mb-4">Contact Us</h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <Phone size={18} className="text-accent mt-1 shrink-0" />
-                <a href="tel:+61400000000" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
-                  0400 000 000
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
                 <Mail size={18} className="text-accent mt-1 shrink-0" />
                 <a href="mailto:info@golfchariots.com.au" className="text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                   info@golfchariots.com.au
@@ -88,7 +82,7 @@ export function PublicFooter() {
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-accent mt-1 shrink-0" />
                 <span className="text-primary-foreground/70">
-                  Brisbane, Queensland<br />Australia
+                  Perth, Western Australia
                 </span>
               </li>
             </ul>
