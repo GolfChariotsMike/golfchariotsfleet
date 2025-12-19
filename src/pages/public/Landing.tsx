@@ -77,6 +77,14 @@ const pricingOptions = [
     featured: false,
   },
   {
+    title: "New",
+    subtitle: "Brand new vehicles",
+    price: "From $4,500",
+    description: "Factory fresh scooters with full manufacturer warranty",
+    features: ["Brand new condition", "Full manufacturer warranty", "Latest models", "Training provided"],
+    featured: false,
+  },
+  {
     title: "Leasing",
     subtitle: "Flexible terms",
     price: "From $50/week",
@@ -275,7 +283,7 @@ export default function Landing() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {pricingOptions.map((option, index) => (
               <Card 
                 key={index} 
