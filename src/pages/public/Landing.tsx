@@ -32,7 +32,7 @@ const vehicles = [{
 }];
 const testimonials = [{
   name: "Mike K.",
-  quote: "Best decision I made for my golf game! I can play a solo round in under 3 hours now and have an absolute blast doing it.",
+  quote: "I never thought golf could be this fun! Cruising around on the scooter makes every round feel like an adventure.",
   rating: 5
 }, {
   name: "Raza A.",
@@ -40,7 +40,7 @@ const testimonials = [{
   rating: 5
 }, {
   name: "Emma D.",
-  quote: "As a single golfer, this has been a game changer. No more waiting for a cart partner - I just hop on and enjoy my round at my own pace.",
+  quote: "Perfect for when I want a quick 9 holes after work. Easy to use, comfortable, and honestly just a lot of fun on the course.",
   rating: 5
 }];
 const pricingOptions = [{
