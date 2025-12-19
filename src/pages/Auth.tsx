@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Mail, Lock, Loader2, User } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import { Mail, Lock, Loader2, User, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,6 +146,10 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted p-4">
+      <Link to="/" className="absolute top-6 left-6 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+        <ArrowLeft className="w-4 h-4" />
+        <span>Back to Home</span>
+      </Link>
       <div className="w-full max-w-md animate-slide-up">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
