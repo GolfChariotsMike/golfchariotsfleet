@@ -42,9 +42,9 @@ const vehicles = [
       { icon: Ruler, label: "Dimensions", value: "187 × 85 × 114.5 cm" },
     ],
     pricing: {
-      purchase: "$4,500",
-      exRental: "From $2,000",
-      lease: "$55/week",
+      purchase: "$6,500",
+      exRental: "From $4,000",
+      lease: "From $65/week",
     },
   },
   {
