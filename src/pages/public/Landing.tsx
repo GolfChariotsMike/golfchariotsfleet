@@ -207,7 +207,7 @@ export default function Landing() {
                       </li>)}
                   </ul>
                   <Link to="/fleet">
-                    <Button variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                    <Button variant="outline" className="border-primary-foreground/30 text-blue-900 hover:text-blue-800 hover:bg-primary-foreground/10">
                       View Details
                       <ChevronRight className="ml-2 w-4 h-4" />
                     </Button>
