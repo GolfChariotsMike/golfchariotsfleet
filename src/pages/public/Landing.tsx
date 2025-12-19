@@ -73,7 +73,7 @@ const pricingOptions = [
     subtitle: "Pre-loved vehicles",
     price: "From $2,000",
     description: "Quality refurbished scooters with full warranty",
-    features: ["Fully serviced", "3-month warranty", "Spare parts included", "Training provided"],
+    features: ["Fully serviced", "3-month warranty", "Spare parts included"],
     featured: false,
   },
   {
@@ -81,7 +81,7 @@ const pricingOptions = [
     subtitle: "Brand new vehicles",
     price: "From $4,500",
     description: "Factory fresh scooters with full manufacturer warranty",
-    features: ["Brand new condition", "Full manufacturer warranty", "Latest models", "Training provided"],
+    features: ["Brand new condition", "Full manufacturer warranty", "Latest models"],
     featured: false,
   },
   {
