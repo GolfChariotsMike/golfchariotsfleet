@@ -23,9 +23,6 @@ type TrikeStatus = Database["public"]["Enums"]["trike_status"];
 type IssueStatus = Database["public"]["Enums"]["issue_status"];
 type AssetType = Database["public"]["Enums"]["asset_type"];
 
-// Off-site locations (workshops/storage)
-const OFF_SITE_LOCATIONS = ["Wangara", "Wembley Downs", "Greenwood"];
-
 export default function TrikeDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -45,6 +42,18 @@ export default function TrikeDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("courses")
+        .select("id, name")
+        .order("name");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: offsiteLocations } = useQuery({
+    queryKey: ["offsite-locations"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("offsite_locations")
         .select("id, name")
         .order("name");
       if (error) throw error;
@@ -599,9 +608,9 @@ export default function TrikeDetail() {
                     <SelectValue placeholder="Select a location" />
                   </SelectTrigger>
                   <SelectContent>
-                    {OFF_SITE_LOCATIONS.map((loc) => (
-                      <SelectItem key={loc} value={loc}>
-                        {loc}
+                    {offsiteLocations?.map((loc) => (
+                      <SelectItem key={loc.id} value={loc.name}>
+                        {loc.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

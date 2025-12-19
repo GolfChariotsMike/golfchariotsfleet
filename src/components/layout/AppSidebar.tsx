@@ -26,7 +26,7 @@ const mainNavItems = [
 ];
 
 const adminNavItems = [
-  { title: "Courses", url: "/courses", icon: MapPin },
+  { title: "Locations", url: "/courses", icon: MapPin },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
