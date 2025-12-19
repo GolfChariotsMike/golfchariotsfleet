@@ -11,6 +11,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import heroBackground from "@/assets/hero-background.jpg";
+import fleetImage from "@/assets/fleet-image.jpg";
 
 const benefits = [
   {
@@ -193,13 +194,12 @@ export default function Landing() {
             </div>
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&h=500&fit=crop"
-                alt="Golf course with scooter"
+                src={fleetImage}
+                alt="Fleet of golf scooters"
                 className="rounded-2xl shadow-hero w-full"
               />
               <div className="absolute -bottom-6 -left-6 bg-accent text-accent-foreground p-6 rounded-xl shadow-elevated">
-                <div className="font-display font-bold text-3xl">50+</div>
-                <div className="text-sm opacity-80">Partner Courses</div>
+                <div className="font-display font-bold text-2xl">Lease a Fleet</div>
               </div>
             </div>
           </div>
