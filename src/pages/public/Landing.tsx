@@ -77,20 +77,20 @@ const pricingOptions = [
     featured: false,
   },
   {
-    title: "New",
-    subtitle: "Brand new vehicles",
-    price: "From $4,500",
-    description: "Factory fresh scooters with full manufacturer warranty",
-    features: ["Brand new condition", "Full manufacturer warranty", "Latest models"],
-    featured: false,
-  },
-  {
     title: "Leasing",
     subtitle: "Flexible terms",
     price: "From $50/week",
     description: "No large upfront cost, all maintenance included",
     features: ["No deposit required", "Maintenance included", "Swap for newer models", "Flexible terms to suit your needs"],
     featured: true,
+  },
+  {
+    title: "New",
+    subtitle: "Brand new vehicles",
+    price: "From $4,500",
+    description: "Factory fresh scooters with full manufacturer warranty",
+    features: ["Brand new condition", "Full manufacturer warranty", "Latest models"],
+    featured: false,
   },
 ];
 
