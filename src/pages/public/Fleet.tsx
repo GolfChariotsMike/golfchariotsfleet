@@ -59,10 +59,8 @@ const vehicles = [
     ],
     features: [
       "Lightweight aluminum frame",
-      "Self-balancing technology",
       "Quick-charge lithium battery",
       "Compact storage footprint",
-      "Easy transport in standard vehicle",
       "Intuitive controls",
     ],
     specs: [
