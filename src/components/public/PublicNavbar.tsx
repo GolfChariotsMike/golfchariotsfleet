@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/golf-chariots-logo.png";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -22,18 +23,12 @@ export function PublicNavbar() {
     <header className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-md border-b border-primary-foreground/10">
       <nav className="container-wide flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent flex items-center justify-center">
-            <span className="font-display font-bold text-accent-foreground text-lg md:text-xl">GC</span>
-          </div>
-          <div className="hidden sm:block">
-            <span className="font-display font-bold text-primary-foreground text-lg md:text-xl tracking-tight">
-              Golf Chariots
-            </span>
-            <span className="block text-primary-foreground/70 text-xs tracking-widest uppercase">
-              Australia
-            </span>
-          </div>
+        <Link to="/" className="flex items-center">
+          <img 
+            src={logo} 
+            alt="Golf Chariots Australia" 
+            className="h-10 md:h-14 w-auto invert"
+          />
         </Link>
 
         {/* Desktop Navigation */}
