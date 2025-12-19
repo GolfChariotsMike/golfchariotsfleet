@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Facebook, Instagram } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import logo from "@/assets/golf-chariots-logo.png";
 
 export function PublicFooter() {
@@ -22,24 +22,6 @@ export function PublicFooter() {
               Australia's leading supplier of fat tyre golf scooters. Increase pace of play, 
               boost revenue, and give your members an unforgettable experience on the course.
             </p>
-            <div className="flex gap-4">
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
-              >
-                <Facebook size={20} />
-              </a>
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors"
-              >
-                <Instagram size={20} />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
