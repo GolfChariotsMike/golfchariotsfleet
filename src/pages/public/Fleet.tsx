@@ -39,7 +39,7 @@ const vehicles = [
       { icon: Battery, label: "Range", value: "36 holes" },
       { icon: Gauge, label: "Top Speed", value: "25 km/h" },
       { icon: Weight, label: "Weight Capacity", value: "120 kg" },
-      { icon: Ruler, label: "Dimensions", value: "160 × 70 × 110 cm" },
+      { icon: Ruler, label: "Dimensions", value: "187 × 85 × 114.5 cm" },
     ],
     pricing: {
       purchase: "$4,500",
