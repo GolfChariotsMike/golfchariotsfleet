@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import heroBackground from "@/assets/hero-background.jpg";
 import fleetImage from "@/assets/fleet-image.jpg";
+import cp7TrikeSide from "@/assets/cp7-trike-side.jpg";
 
 const benefits = [
   {
@@ -36,7 +37,7 @@ const vehicles = [
     name: "CP7 3-Wheel Trike",
     description: "Our flagship articulating trike with superior stability and a smooth ride on any terrain.",
     features: ["Fat tyres for all conditions", "Articulating front wheel", "Large storage basket", "Premium seat comfort"],
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&h=400&fit=crop",
+    image: cp7TrikeSide,
   },
   {
     name: "2-Wheel Golf Cruiser",
