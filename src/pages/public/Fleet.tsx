@@ -30,7 +30,7 @@ const vehicles = [
     features: [
       "Articulating rear wheel for smooth turns",
       "Fat tyres for all-terrain capability",
-      "Large rear storage basket",
+      "Large rear storage area",
       "Premium padded seat",
       "Adjustable handlebars",
       "LED headlight included",
