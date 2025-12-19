@@ -38,7 +38,7 @@ const vehicles = [
     specs: [
       { icon: Battery, label: "Range", value: "36 holes" },
       { icon: Gauge, label: "Top Speed", value: "25 km/h" },
-      { icon: Weight, label: "Weight Capacity", value: "120 kg" },
+      { icon: Weight, label: "Weight Capacity", value: "200 kg" },
       { icon: Ruler, label: "Dimensions", value: "187 × 85 × 114.5 cm" },
     ],
     pricing: {
