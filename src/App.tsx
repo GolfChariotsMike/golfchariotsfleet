@@ -5,7 +5,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/lib/auth-context";
 
-// Pages
+// Public Pages
+import { PublicLayout } from "@/components/public/PublicLayout";
+import Landing from "./pages/public/Landing";
+import Fleet from "./pages/public/Fleet";
+import Contact from "./pages/public/Contact";
+
+// Admin Pages
 import Auth from "./pages/Auth";
 import ReportIssue from "./pages/ReportIssue";
 import ScanAsset from "./pages/ScanAsset";
@@ -38,7 +44,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-function PublicRoute({ children }: { children: React.ReactNode }) {
+function AuthRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -50,7 +56,7 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (user) {
-    return <Navigate to="/report" replace />;
+    return <Navigate to="/admin/report" replace />;
   }
 
   return <>{children}</>;
@@ -59,27 +65,34 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
-      {/* Public routes */}
+      {/* Public website routes */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/fleet" element={<Fleet />} />
+        <Route path="/contact" element={<Contact />} />
+      </Route>
+
+      {/* Auth route */}
       <Route
         path="/auth"
         element={
-          <PublicRoute>
+          <AuthRoute>
             <Auth />
-          </PublicRoute>
+          </AuthRoute>
         }
       />
 
-      {/* Protected routes */}
+      {/* Protected admin routes */}
       <Route
-        path="/"
+        path="/admin"
         element={
           <ProtectedRoute>
-            <Navigate to="/report" replace />
+            <Navigate to="/admin/report" replace />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/report"
+        path="/admin/report"
         element={
           <ProtectedRoute>
             <ReportIssue />
@@ -87,7 +100,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/scan"
+        path="/admin/scan"
         element={
           <ProtectedRoute>
             <ScanAsset />
@@ -95,7 +108,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/trikes"
+        path="/admin/trikes"
         element={
           <ProtectedRoute>
             <Trikes />
@@ -103,7 +116,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/trikes/:id"
+        path="/admin/trikes/:id"
         element={
           <ProtectedRoute>
             <TrikeDetail />
@@ -111,7 +124,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/issues"
+        path="/admin/issues"
         element={
           <ProtectedRoute>
             <Issues />
@@ -119,7 +132,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/issues/:id"
+        path="/admin/issues/:id"
         element={
           <ProtectedRoute>
             <IssueDetail />
@@ -127,7 +140,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/courses"
+        path="/admin/courses"
         element={
           <ProtectedRoute>
             <Courses />
@@ -135,7 +148,7 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/courses/:id"
+        path="/admin/courses/:id"
         element={
           <ProtectedRoute>
             <CourseDetail />
@@ -143,13 +156,21 @@ function AppRoutes() {
         }
       />
       <Route
-        path="/settings"
+        path="/admin/settings"
         element={
           <ProtectedRoute>
             <Settings />
           </ProtectedRoute>
         }
       />
+
+      {/* Legacy route redirects */}
+      <Route path="/report" element={<Navigate to="/admin/report" replace />} />
+      <Route path="/scan" element={<Navigate to="/admin/scan" replace />} />
+      <Route path="/trikes" element={<Navigate to="/admin/trikes" replace />} />
+      <Route path="/issues" element={<Navigate to="/admin/issues" replace />} />
+      <Route path="/courses" element={<Navigate to="/admin/courses" replace />} />
+      <Route path="/settings" element={<Navigate to="/admin/settings" replace />} />
 
       {/* Catch-all */}
       <Route path="*" element={<NotFound />} />
