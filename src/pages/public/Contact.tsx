@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
@@ -45,12 +45,6 @@ const inquiryTypes = [
 ];
 
 const contactInfo = [
-  {
-    icon: Phone,
-    title: "Phone",
-    value: "0400 000 000",
-    href: "tel:+61400000000",
-  },
   {
     icon: Mail,
     title: "Email",
