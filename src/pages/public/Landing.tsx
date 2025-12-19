@@ -32,18 +32,15 @@ const vehicles = [{
 }];
 const testimonials = [{
   name: "Mike K.",
-  role: "Club Manager, Brisbane Golf Club",
-  quote: "Since introducing Golf Chariots, our rental revenue has increased by 40%. Members absolutely love them!",
+  quote: "Best decision I made for my golf game! I can play a solo round in under 3 hours now and have an absolute blast doing it.",
   rating: 5
 }, {
   name: "Raza A.",
-  role: "Head Pro, Gold Coast Links",
-  quote: "The pace of play improvement has been remarkable. Single riders are finishing 30 minutes faster on average.",
+  quote: "These scooters are incredibly fun to ride. My mates and I always request them when we book a round - it's become part of the experience!",
   rating: 5
 }, {
   name: "Emma D.",
-  role: "Operations Manager, Sydney Shores",
-  quote: "Professional service from start to finish. The trikes are reliable, fun, and our guests can't get enough.",
+  quote: "As a single golfer, this has been a game changer. No more waiting for a cart partner - I just hop on and enjoy my round at my own pace.",
   rating: 5
 }];
 const pricingOptions = [{
@@ -290,10 +287,7 @@ export default function Landing() {
                   <blockquote className="text-foreground mb-6 italic">
                     "{testimonial.quote}"
                   </blockquote>
-                  <div>
-                    <div className="font-semibold text-foreground">{testimonial.name}</div>
-                    <div className="text-muted-foreground text-sm">{testimonial.role}</div>
-                  </div>
+                  <div className="font-semibold text-foreground">{testimonial.name}</div>
                 </CardContent>
               </Card>)}
           </div>
