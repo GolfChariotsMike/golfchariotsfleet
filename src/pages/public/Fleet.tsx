@@ -28,7 +28,7 @@ const vehicles = [
       cp7TrikeFront,
     ],
     features: [
-      "Articulating front wheel for smooth turns",
+      "Articulating rear wheel for smooth turns",
       "Fat tyres for all-terrain capability",
       "Large rear storage basket",
       "Premium padded seat",
