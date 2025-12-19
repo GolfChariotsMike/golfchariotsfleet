@@ -96,33 +96,35 @@ export default function Landing() {
             backgroundImage: `url(${heroBackground})` 
           }}
         />
-        <div className="absolute inset-0 hero-gradient" />
+        <div className="absolute inset-0 bg-gradient-to-l from-primary/80 via-primary/40 to-transparent" />
         
         <div className="relative container-wide py-20">
-          <div className="max-w-3xl">
-            <span className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6 animate-fade-in">
-              Australia's #1 Golf Scooter Supplier
-            </span>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-7xl font-bold text-primary-foreground mb-6 leading-tight animate-slide-up">
-              FAT TYRE<br />
-              <span className="text-accent">GOLF SCOOTERS</span>
-            </h1>
-            <p className="text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-xl animate-slide-up" style={{ animationDelay: "100ms" }}>
-              Transform your course with premium single-rider scooters. Increase pace of play, 
-              boost revenue, and give golfers an unforgettable experience.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up" style={{ animationDelay: "200ms" }}>
-              <Link to="/fleet">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8">
-                  Explore Our Fleet
-                  <ChevronRight className="ml-2" />
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8">
-                  Get A Quote
-                </Button>
-              </Link>
+          <div className="flex justify-end">
+            <div className="max-w-xl text-right">
+              <span className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6 animate-fade-in">
+                Australia's #1 Golf Scooter Supplier
+              </span>
+              <h1 className="font-display text-4xl md:text-5xl lg:text-7xl font-bold text-primary-foreground mb-6 leading-tight animate-slide-up">
+                FAT TYRE<br />
+                <span className="text-accent">GOLF SCOOTERS</span>
+              </h1>
+              <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 animate-slide-up" style={{ animationDelay: "100ms" }}>
+                Transform your course with premium single-rider scooters. Increase pace of play, 
+                boost revenue, and give golfers an unforgettable experience.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-end animate-slide-up" style={{ animationDelay: "200ms" }}>
+                <Link to="/fleet">
+                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8">
+                    Explore Our Fleet
+                    <ChevronRight className="ml-2" />
+                  </Button>
+                </Link>
+                <Link to="/contact">
+                  <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8">
+                    Get A Quote
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
