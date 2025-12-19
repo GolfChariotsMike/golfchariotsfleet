@@ -10,6 +10,8 @@ import { PublicLayout } from "@/components/public/PublicLayout";
 import Landing from "./pages/public/Landing";
 import Fleet from "./pages/public/Fleet";
 import Contact from "./pages/public/Contact";
+import PrivacyPolicy from "./pages/public/PrivacyPolicy";
+import TermsOfService from "./pages/public/TermsOfService";
 
 // Admin Pages
 import Auth from "./pages/Auth";
@@ -70,6 +72,8 @@ function AppRoutes() {
         <Route path="/" element={<Landing />} />
         <Route path="/fleet" element={<Fleet />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
       </Route>
 
       {/* Auth route */}
