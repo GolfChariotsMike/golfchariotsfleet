@@ -10,6 +10,8 @@ import {
   Ruler,
   ShieldCheck
 } from "lucide-react";
+import cp7TrikeSide from "@/assets/cp7-trike-side.jpg";
+import cp7TrikeFront from "@/assets/cp7-trike-front.jpg";
 
 const vehicles = [
   {
@@ -17,10 +19,10 @@ const vehicles = [
     name: "CP7 3-Wheel Trike",
     tagline: "The Ultimate Golf Experience",
     description: "Our flagship articulating trike offers superior stability and comfort on any terrain. The unique front wheel articulation provides exceptional maneuverability while maintaining a smooth, safe ride throughout your round.",
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=800&h=600&fit=crop",
+    image: cp7TrikeSide,
     gallery: [
-      "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=400&h=300&fit=crop",
+      cp7TrikeSide,
+      cp7TrikeFront,
     ],
     features: [
       "Articulating front wheel for smooth turns",
