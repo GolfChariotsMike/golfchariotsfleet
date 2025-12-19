@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle, Trash2, Pencil } from "lucide-react";
+import { ArrowLeft, Bike, MapPin, AlertTriangle, Clock, Plus, CheckCircle, XCircle, Trash2, Pencil, Warehouse } from "lucide-react";
 import { TrikeIcon } from "@/components/icons/TrikeIcon";
 import { AssetQRCode } from "@/components/AssetQRCode";
 import { AppLayout } from "@/components/layout/AppLayout";
@@ -23,6 +23,9 @@ type TrikeStatus = Database["public"]["Enums"]["trike_status"];
 type IssueStatus = Database["public"]["Enums"]["issue_status"];
 type AssetType = Database["public"]["Enums"]["asset_type"];
 
+// Off-site locations (workshops/storage)
+const OFF_SITE_LOCATIONS = ["Wangara", "Wembley Downs", "Greenwood"];
+
 export default function TrikeDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -32,6 +35,22 @@ export default function TrikeDetail() {
   const [issueFilter, setIssueFilter] = useState<"all" | "open">("open");
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
   const [newName, setNewName] = useState("");
+  const [locationDialogOpen, setLocationDialogOpen] = useState(false);
+  const [locationType, setLocationType] = useState<"course" | "offsite">("course");
+  const [selectedCourseId, setSelectedCourseId] = useState("");
+  const [selectedOffsiteLocation, setSelectedOffsiteLocation] = useState("");
+
+  const { data: courses } = useQuery({
+    queryKey: ["courses"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("courses")
+        .select("id, name")
+        .order("name");
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const { data: trike, isLoading: trikeLoading } = useQuery({
     queryKey: ["trike", id],
@@ -130,10 +149,54 @@ export default function TrikeDetail() {
     },
   });
 
+  const updateLocationMutation = useMutation({
+    mutationFn: async ({ courseId, location }: { courseId: string | null; location: string | null }) => {
+      const { error } = await supabase
+        .from("trikes")
+        .update({ course_id: courseId, location })
+        .eq("id", id!);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["trike", id] });
+      queryClient.invalidateQueries({ queryKey: ["trikes"] });
+      toast({ title: "Location updated" });
+      setLocationDialogOpen(false);
+    },
+    onError: () => {
+      toast({ variant: "destructive", title: "Failed to update location" });
+    },
+  });
+
   const handleRename = () => {
     if (newName.trim()) {
       renameAssetMutation.mutate(newName.trim());
     }
+  };
+
+  const handleLocationChange = () => {
+    if (locationType === "course" && selectedCourseId) {
+      updateLocationMutation.mutate({ courseId: selectedCourseId, location: null });
+    } else if (locationType === "offsite" && selectedOffsiteLocation) {
+      updateLocationMutation.mutate({ courseId: null, location: selectedOffsiteLocation });
+    }
+  };
+
+  const openLocationDialog = () => {
+    if (trike?.course_id) {
+      setLocationType("course");
+      setSelectedCourseId(trike.course_id);
+      setSelectedOffsiteLocation("");
+    } else if (trike?.location) {
+      setLocationType("offsite");
+      setSelectedOffsiteLocation(trike.location);
+      setSelectedCourseId("");
+    } else {
+      setLocationType("course");
+      setSelectedCourseId("");
+      setSelectedOffsiteLocation("");
+    }
+    setLocationDialogOpen(true);
   };
 
   const AssetIcon = ({ type, className = "w-7 h-7" }: { type: AssetType; className?: string }) => 
@@ -214,8 +277,17 @@ export default function TrikeDetail() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-2 text-sm">
-                <MapPin className="w-4 h-4 text-muted-foreground" />
-                <span>{trike.courses?.name || "Unassigned"}</span>
+                {trike.location ? (
+                  <>
+                    <Warehouse className="w-4 h-4 text-muted-foreground" />
+                    <span>{trike.location}</span>
+                  </>
+                ) : (
+                  <>
+                    <MapPin className="w-4 h-4 text-muted-foreground" />
+                    <span>{trike.courses?.name || "Unassigned"}</span>
+                  </>
+                )}
               </div>
               {trike.notes && (
                 <p className="text-sm text-muted-foreground">{trike.notes}</p>
@@ -224,6 +296,10 @@ export default function TrikeDetail() {
               {/* Quick Actions */}
               {isAdmin && (
                 <div className="pt-4 border-t flex flex-wrap gap-2">
+                  <Button size="sm" variant="outline" onClick={openLocationDialog}>
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Change Location
+                  </Button>
                   <Dialog open={renameDialogOpen} onOpenChange={(open) => {
                     setRenameDialogOpen(open);
                     if (open) setNewName(trike.name);
@@ -385,8 +461,8 @@ export default function TrikeDetail() {
             assetTag={trike.asset_tag} 
           />
 
-          {/* Course Info */}
-          {trike.courses && (
+          {/* Location Info */}
+          {trike.courses ? (
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Course Details</CardTitle>
@@ -420,6 +496,18 @@ export default function TrikeDetail() {
                 )}
               </CardContent>
             </Card>
+          ) : trike.location && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Off-site Location</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div className="flex items-center gap-2">
+                  <Warehouse className="w-4 h-4 text-muted-foreground" />
+                  <span className="font-medium">{trike.location}</span>
+                </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* Stats */}
@@ -446,6 +534,98 @@ export default function TrikeDetail() {
           </Card>
         </div>
       </div>
+
+      {/* Change Location Dialog */}
+      <Dialog open={locationDialogOpen} onOpenChange={setLocationDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Change Location</DialogTitle>
+            <DialogDescription>
+              Move this asset to a different course or off-site location.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Location Type</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  type="button"
+                  variant={locationType === "course" ? "default" : "outline"}
+                  onClick={() => {
+                    setLocationType("course");
+                    setSelectedOffsiteLocation("");
+                  }}
+                  className="justify-start"
+                >
+                  <MapPin className="w-4 h-4 mr-2" />
+                  Course
+                </Button>
+                <Button
+                  type="button"
+                  variant={locationType === "offsite" ? "default" : "outline"}
+                  onClick={() => {
+                    setLocationType("offsite");
+                    setSelectedCourseId("");
+                  }}
+                  className="justify-start"
+                >
+                  <Warehouse className="w-4 h-4 mr-2" />
+                  Off-site
+                </Button>
+              </div>
+            </div>
+
+            {locationType === "course" ? (
+              <div className="space-y-2">
+                <Label>Course</Label>
+                <Select value={selectedCourseId} onValueChange={setSelectedCourseId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a course" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {courses?.map((course) => (
+                      <SelectItem key={course.id} value={course.id}>
+                        {course.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Label>Off-site Location</Label>
+                <Select value={selectedOffsiteLocation} onValueChange={setSelectedOffsiteLocation}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {OFF_SITE_LOCATIONS.map((loc) => (
+                      <SelectItem key={loc} value={loc}>
+                        {loc}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setLocationDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleLocationChange} 
+              disabled={
+                updateLocationMutation.isPending || 
+                (locationType === "course" && !selectedCourseId) ||
+                (locationType === "offsite" && !selectedOffsiteLocation)
+              }
+            >
+              {updateLocationMutation.isPending ? "Saving..." : "Save"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 }
