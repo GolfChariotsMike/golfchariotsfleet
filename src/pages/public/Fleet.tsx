@@ -32,7 +32,7 @@ const vehicles = [
       "Fat tyres for all-terrain capability",
       "Large rear storage area",
       "Premium padded seat",
-      "Adjustable handlebars",
+      "Lithium-Ion \"Quick-Swap\" Battery",
       "LED headlight included",
     ],
     specs: [
