@@ -13,6 +13,7 @@ import {
 import heroBackground from "@/assets/hero-background.jpg";
 import fleetImage from "@/assets/fleet-image.jpg";
 import cp7TrikeSide from "@/assets/cp7-trike-side.jpg";
+import twoWheelCruiserSide from "@/assets/2wheel-cruiser-side.jpg";
 
 const benefits = [
   {
@@ -43,7 +44,7 @@ const vehicles = [
     name: "2-Wheel Golf Cruiser",
     description: "Compact and nimble, perfect for courses seeking a minimalist approach with maximum fun.",
     features: ["Lightweight design", "Easy to maneuver", "Quick charge battery", "Compact footprint"],
-    image: "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=600&h=400&fit=crop",
+    image: twoWheelCruiserSide,
   },
 ];
 
