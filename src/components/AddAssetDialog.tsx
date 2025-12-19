@@ -27,9 +27,6 @@ import type { Database } from "@/integrations/supabase/types";
 
 type AssetType = Database["public"]["Enums"]["asset_type"];
 
-// Off-site locations (workshops/storage)
-const OFF_SITE_LOCATIONS = ["Wangara", "Wembley Downs", "Greenwood"];
-
 interface AddAssetDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -52,6 +49,18 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("courses")
+        .select("id, name")
+        .order("name");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: offsiteLocations } = useQuery({
+    queryKey: ["offsite-locations"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("offsite_locations")
         .select("id, name")
         .order("name");
       if (error) throw error;
@@ -221,9 +230,9 @@ export function AddAssetDialog({ open, onOpenChange }: AddAssetDialogProps) {
                   <SelectValue placeholder="Select a location" />
                 </SelectTrigger>
                 <SelectContent>
-                  {OFF_SITE_LOCATIONS.map((loc) => (
-                    <SelectItem key={loc} value={loc}>
-                      {loc}
+                  {offsiteLocations?.map((loc) => (
+                    <SelectItem key={loc.id} value={loc.name}>
+                      {loc.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
