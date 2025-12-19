@@ -98,9 +98,8 @@ export default function Landing() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent" />
         
-        <div className="relative container-wide py-20">
-          <div className="flex justify-start">
-            <div className="max-w-xl text-left">
+        <div className="relative w-full py-20 px-6 md:px-12 lg:px-16">
+          <div className="max-w-xl text-left">
               <span className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6 animate-fade-in">
                 Australia's #1 Golf Scooter Supplier
               </span>
@@ -125,7 +124,6 @@ export default function Landing() {
                   </Button>
                 </Link>
               </div>
-            </div>
           </div>
         </div>
         
