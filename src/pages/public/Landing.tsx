@@ -10,6 +10,7 @@ import {
   Check,
   ArrowRight
 } from "lucide-react";
+import heroBackground from "@/assets/hero-background.jpg";
 
 const benefits = [
   {
@@ -92,7 +93,7 @@ export default function Landing() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ 
-            backgroundImage: "url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1920&h=1080&fit=crop')" 
+            backgroundImage: `url(${heroBackground})` 
           }}
         />
         <div className="absolute inset-0 hero-gradient" />
