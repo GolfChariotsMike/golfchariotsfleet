@@ -43,8 +43,8 @@ const vehicles = [
     ],
     pricing: {
       purchase: "$6,500",
-      exRental: "From $4,000",
-      lease: "From $65/week",
+      exRental: "$4,000",
+      lease: "$65/week",
     },
   },
   {
