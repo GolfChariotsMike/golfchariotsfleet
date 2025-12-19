@@ -37,7 +37,7 @@ const vehicles = [
     ],
     specs: [
       { icon: Battery, label: "Range", value: "36 holes" },
-      { icon: Gauge, label: "Top Speed", value: "20 km/h" },
+      { icon: Gauge, label: "Top Speed", value: "25 km/h" },
       { icon: Weight, label: "Weight Capacity", value: "120 kg" },
       { icon: Ruler, label: "Dimensions", value: "160 × 70 × 110 cm" },
     ],
@@ -66,8 +66,8 @@ const vehicles = [
       "Intuitive controls",
     ],
     specs: [
-      { icon: Battery, label: "Range", value: "27 holes" },
-      { icon: Gauge, label: "Top Speed", value: "18 km/h" },
+      { icon: Battery, label: "Range", value: "36 holes" },
+      { icon: Gauge, label: "Top Speed", value: "25 km/h" },
       { icon: Weight, label: "Weight Capacity", value: "110 kg" },
       { icon: Ruler, label: "Dimensions", value: "130 × 55 × 100 cm" },
     ],
