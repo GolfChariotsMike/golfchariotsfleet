@@ -53,8 +53,8 @@ const contactInfo = [
   },
   {
     icon: MapPin,
-    title: "Location",
-    value: "Brisbane, Queensland",
+    title: "Locations",
+    value: "Perth, WA • Sydney, NSW",
     href: null,
   },
   {
@@ -327,10 +327,10 @@ export default function Contact() {
         <div className="container-wide section-padding">
           <div className="text-center">
             <h2 className="font-display text-2xl font-bold text-foreground mb-4">
-              Based in Brisbane, Serving All of Australia
+              Based in Perth & Sydney, Serving All of Australia
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We work with golf courses across Queensland, New South Wales, Victoria, 
+              We work with golf courses across Western Australia, New South Wales, 
               and beyond. Delivery and setup available nationwide.
             </p>
           </div>
