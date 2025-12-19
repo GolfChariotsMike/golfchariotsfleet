@@ -77,10 +77,10 @@ export function PublicFooter() {
             © {currentYear} Golf Chariots Australia. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
-            <Link to="/contact" className="text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
+            <Link to="/privacy" className="text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
               Privacy Policy
             </Link>
-            <Link to="/contact" className="text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
+            <Link to="/terms" className="text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
               Terms of Service
             </Link>
           </div>
