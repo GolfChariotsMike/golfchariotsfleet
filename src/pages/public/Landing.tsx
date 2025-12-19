@@ -304,18 +304,13 @@ export default function Landing() {
             Join the growing number of Australian golf courses offering fat tyre scooters. 
             Get in touch today for a free consultation and quote.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Link to="/contact">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8">
                 Get Your Free Quote
                 <ArrowRight className="ml-2" />
               </Button>
             </Link>
-            <a href="tel:+61400000000">
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8">
-                Call Us Now
-              </Button>
-            </a>
           </div>
         </div>
       </section>
