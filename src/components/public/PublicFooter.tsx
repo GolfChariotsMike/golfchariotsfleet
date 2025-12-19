@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Facebook, Instagram } from "lucide-react";
+import logo from "@/assets/golf-chariots-logo.png";
 
 export function PublicFooter() {
   const currentYear = new Date().getFullYear();
@@ -10,19 +11,13 @@ export function PublicFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center">
-                <span className="font-display font-bold text-accent-foreground text-xl">GC</span>
-              </div>
-              <div>
-                <span className="font-display font-bold text-xl tracking-tight">
-                  Golf Chariots
-                </span>
-                <span className="block text-primary-foreground/70 text-xs tracking-widest uppercase">
-                  Australia
-                </span>
-              </div>
-            </div>
+            <Link to="/" className="inline-block mb-4">
+              <img 
+                src={logo} 
+                alt="Golf Chariots Australia" 
+                className="h-12 md:h-16 w-auto invert"
+              />
+            </Link>
             <p className="text-primary-foreground/70 max-w-md mb-6">
               Australia's leading supplier of fat tyre golf scooters. Increase pace of play, 
               boost revenue, and give your members an unforgettable experience on the course.
