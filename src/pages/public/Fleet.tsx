@@ -64,7 +64,7 @@ const vehicles = [
       "Intuitive controls",
     ],
     specs: [
-      { icon: Battery, label: "Range", value: "36 holes" },
+      { icon: Battery, label: "Range", value: "27 holes" },
       { icon: Gauge, label: "Top Speed", value: "25 km/h" },
       { icon: Weight, label: "Weight Capacity", value: "110 kg" },
       { icon: Ruler, label: "Dimensions", value: "130 × 55 × 100 cm" },
