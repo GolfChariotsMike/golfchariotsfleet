@@ -96,11 +96,11 @@ export default function Landing() {
             backgroundImage: `url(${heroBackground})` 
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-primary/80 via-primary/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent" />
         
         <div className="relative container-wide py-20">
-          <div className="flex justify-end">
-            <div className="max-w-xl text-right">
+          <div className="flex justify-start">
+            <div className="max-w-xl text-left">
               <span className="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6 animate-fade-in">
                 Australia's #1 Golf Scooter Supplier
               </span>
@@ -112,7 +112,7 @@ export default function Landing() {
                 Transform your course with premium single-rider scooters. Increase pace of play, 
                 boost revenue, and give golfers an unforgettable experience.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-end animate-slide-up" style={{ animationDelay: "200ms" }}>
+              <div className="flex flex-col sm:flex-row gap-4 justify-start animate-slide-up" style={{ animationDelay: "200ms" }}>
                 <Link to="/fleet">
                   <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8">
                     Explore Our Fleet
