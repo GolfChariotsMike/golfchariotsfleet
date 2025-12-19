@@ -72,8 +72,8 @@ const pricingOptions = [
     title: "Ex-Rental",
     subtitle: "Pre-loved vehicles",
     price: "From $2,000",
-    description: "Quality refurbished scooters with full warranty",
-    features: ["Fully serviced", "3-month warranty", "Spare parts included"],
+    description: "Quality refurbished scooters with a 6 month warranty",
+    features: ["Fully serviced", "6-month warranty", "Spare parts included"],
     featured: false,
   },
   {
