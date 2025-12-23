@@ -1,7 +1,14 @@
+import { SEO } from "@/components/SEO";
+
 export default function TermsOfService() {
   return (
     <div className="page-transition pt-20">
-      {/* Hero */}
+      <SEO
+        title="Terms of Service"
+        description="Read Golf Chariots Australia's terms of service. Understand the terms and conditions for using our products and services."
+        canonicalUrl="/terms"
+        noIndex={false}
+      />
       <section className="relative py-16 md:py-24 bg-primary text-primary-foreground">
         <div className="container-wide">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">

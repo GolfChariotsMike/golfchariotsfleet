@@ -1,3 +1,6 @@
+# Golf Chariots Australia - robots.txt
+# https://golfchariots.com.au
+
 User-agent: Googlebot
 Allow: /
 
@@ -12,3 +15,13 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Sitemap location
+Sitemap: https://golfchariots.com.au/sitemap.xml
+
+# Disallow admin routes from indexing
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /auth
+Disallow: /scan/*
+Disallow: /report/*

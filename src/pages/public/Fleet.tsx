@@ -10,6 +10,7 @@ import {
   Ruler,
   ShieldCheck
 } from "lucide-react";
+import { SEO, structuredData } from "@/components/SEO";
 import cp7TrikeSide from "@/assets/cp7-trike-side.jpg";
 import cp7TrikeFront from "@/assets/cp7-trike-front.jpg";
 import cruiserFront from "@/assets/2wheel-cruiser-front.jpg";
@@ -96,8 +97,30 @@ const benefits = [
 ];
 
 export default function Fleet() {
+  const productListStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": vehicles.map((vehicle, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": structuredData.product(
+        vehicle.name,
+        vehicle.description,
+        vehicle.pricing.purchase,
+        `https://golfchariots.com.au${vehicle.image}`
+      )
+    }))
+  };
+
   return (
     <div className="page-transition pt-20">
+      <SEO
+        title="Our Fleet - GCA3 Trikes & GCA2 Scooters"
+        description="Explore our premium fat tyre golf scooters. GCA3 Trike with articulating rear wheel and GCA2 2-Wheel Scooter. Buy, lease, or rent for your golf course."
+        keywords="GCA3 trike, GCA2 scooter, golf scooter fleet, fat tyre golf scooter, golf course scooter rental, buy golf scooter Australia"
+        canonicalUrl="/fleet"
+        structuredData={productListStructuredData}
+      />
       {/* Hero */}
       <section className="relative py-20 md:py-32 bg-primary text-primary-foreground overflow-hidden">
         <div className="absolute inset-0 opacity-20">

@@ -24,6 +24,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { SEO, structuredData } from "@/components/SEO";
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
@@ -123,6 +124,13 @@ export default function Contact() {
 
   return (
     <div className="page-transition pt-20">
+      <SEO
+        title="Contact Us - Get a Quote"
+        description="Get in touch with Golf Chariots Australia. Request a quote, book a demo, or enquire about leasing golf scooters for your course. Perth & Sydney locations."
+        keywords="contact golf chariots, golf scooter quote, book demo golf scooter, lease golf scooter Australia, golf course equipment enquiry"
+        canonicalUrl="/contact"
+        structuredData={structuredData.localBusiness}
+      />
       {/* Hero */}
       <section className="relative py-20 md:py-32 bg-primary text-primary-foreground overflow-hidden">
         <div className="absolute inset-0 opacity-20">

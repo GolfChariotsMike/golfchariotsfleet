@@ -1,7 +1,14 @@
+import { SEO } from "@/components/SEO";
+
 export default function PrivacyPolicy() {
   return (
     <div className="page-transition pt-20">
-      {/* Hero */}
+      <SEO
+        title="Privacy Policy"
+        description="Read Golf Chariots Australia's privacy policy. Learn how we collect, use, and protect your personal information."
+        canonicalUrl="/privacy"
+        noIndex={false}
+      />
       <section className="relative py-16 md:py-24 bg-primary text-primary-foreground">
         <div className="container-wide">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
