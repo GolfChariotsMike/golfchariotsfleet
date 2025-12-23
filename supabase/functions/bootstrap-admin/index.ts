@@ -27,17 +27,18 @@ serve(async (req) => {
       );
     }
 
-    // Check if any admin users exist
-    const { data: existingAdmins } = await supabaseAdmin
-      .from("user_roles")
+    // TEMPORARY: Allow multiple admin creation - user will disable after setup
+    // Check if user with this email already exists
+    const { data: existingUser } = await supabaseAdmin
+      .from("profiles")
       .select("id")
-      .eq("role", "admin")
+      .eq("email", email)
       .limit(1);
 
-    if (existingAdmins && existingAdmins.length > 0) {
+    if (existingUser && existingUser.length > 0) {
       return new Response(
-        JSON.stringify({ error: "Admin user already exists. Use the admin panel to create new users." }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({ error: "A user with this email already exists." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
