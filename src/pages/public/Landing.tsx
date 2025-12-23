@@ -20,12 +20,12 @@ const benefits = [{
   description: "Premium rental fees and increased round capacity translate directly to your bottom line."
 }];
 const vehicles = [{
-  name: "CP7 3-Wheel Trike",
+  name: "GCA3 - Trike",
   description: "Our flagship articulating trike with superior stability and a smooth ride on any terrain.",
   features: ["Fat tyres for all conditions", "Articulating front wheel", "Large storage basket", "Premium seat comfort"],
   image: cp7TrikeSide
 }, {
-  name: "2-Wheel Golf Cruiser",
+  name: "GCA2 - 2 Wheel Scooter",
   description: "Compact and nimble, perfect for courses seeking a minimalist approach with maximum fun.",
   features: ["Lightweight design", "Easy to maneuver", "Quick charge battery", "Compact footprint"],
   image: twoWheelCruiserSide
