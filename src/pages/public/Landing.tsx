@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Timer, Smile, DollarSign, ChevronRight, Star, Check, ArrowRight } from "lucide-react";
+import { SEO, structuredData } from "@/components/SEO";
 import heroBackground from "@/assets/hero-background.jpg";
 import fleetImage from "@/assets/fleet-image.jpg";
 import cp7TrikeSide from "@/assets/cp7-trike-side.jpg";
@@ -66,7 +67,15 @@ const pricingOptions = [{
   featured: false
 }];
 export default function Landing() {
-  return <div className="page-transition">
+  return (
+    <div className="page-transition">
+      <SEO
+        title="Premium Fat Tyre Golf Scooters"
+        description="Australia's #1 golf scooter supplier. Lease or buy GCA3 Trikes and GCA2 2-Wheel Scooters for your golf course. Increase pace of play and boost revenue."
+        keywords="golf scooters, fat tyre golf scooter, golf cart alternative, GCA3 trike, GCA2 scooter, golf course equipment Australia"
+        canonicalUrl="/"
+        structuredData={structuredData.organization}
+      />
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20">
         <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
@@ -314,5 +323,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-    </div>;
+    </div>
+  );
 }
