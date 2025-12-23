@@ -18,8 +18,8 @@ import cruiserGroup from "@/assets/2wheel-cruiser-group.jpg";
 
 const vehicles = [
   {
-    id: "cp7-trike",
-    name: "CP7 3-Wheel Trike",
+    id: "gca3-trike",
+    name: "GCA3 - Trike",
     tagline: "The Ultimate Golf Experience",
     description: "Our flagship articulating trike offers superior stability and comfort on any terrain. The unique rear wheel articulation provides exceptional maneuverability while maintaining a smooth, safe ride throughout your round.",
     image: cp7TrikeSide,
@@ -48,8 +48,8 @@ const vehicles = [
     },
   },
   {
-    id: "2-wheel-cruiser",
-    name: "2-Wheel Golf Cruiser",
+    id: "gca2-scooter",
+    name: "GCA2 - 2 Wheel Scooter",
     tagline: "Compact & Nimble",
     description: "Perfect for courses seeking a minimalist approach with maximum fun. The 2-Wheel Cruiser offers a more dynamic riding experience with a smaller footprint, making it ideal for tighter courses or those new to golf scooters.",
     image: cruiserSide,
